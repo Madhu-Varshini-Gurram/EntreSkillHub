@@ -542,7 +542,6 @@ function App() {
         {view === 'landing' && (
           <div>
             <section className="hero-section">
-              <div className="hero-tag">Unified Mentor SBA Platform</div>
               <h1 className="hero-title">
                 Turn Practical Skills Into a <span className="text-gradient">Sustainable Business</span>
               </h1>
@@ -1364,7 +1363,7 @@ function App() {
       {/* Footer */}
       <footer className="footer">
         <div className="container">
-          <p>© 2026 EntreSkill Hub. SBA Enablement Platform. Empowering grassroots local enterprises.</p>
+          <p>© 2026 EntreSkill Hub.</p>
         </div>
       </footer>
     </div>
