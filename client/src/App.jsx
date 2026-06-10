@@ -943,15 +943,27 @@ function App() {
                     <span className="text-gradient">${monthlyProfit}/mo</span>
                   </div>
 
-                  <div className={`calc-verdict-box ${monthlyProfit > 0 ? 'positive' : 'neutral'}`}>
+                   <div className={`calc-verdict-box ${monthlyProfit > 0 ? 'positive' : 'neutral'}`}>
                     {marginPerUnit <= 0 ? (
-                      <span>⚠️ Warning: Supply cost is higher than or equal to sale price. Adjust your pricing model to ensure viability.</span>
+                      <span style={{ display: 'flex', gap: '0.4rem', alignItems: 'flex-start' }}>
+                        <span style={{ flexShrink: 0 }}>⚠️</span>
+                        <span>Warning: Supply cost is higher than or equal to sale price. Adjust your pricing model to ensure viability.</span>
+                      </span>
                     ) : monthlyProfit <= 0 ? (
-                      <span>⚠️ Warning: Monthly order volume is too low to cover your raw costs. Work on generating more customer traffic.</span>
+                      <span style={{ display: 'flex', gap: '0.4rem', alignItems: 'flex-start' }}>
+                        <span style={{ flexShrink: 0 }}>⚠️</span>
+                        <span>Warning: Monthly order volume is too low to cover your raw costs. Work on generating more customer traffic.</span>
+                      </span>
                     ) : calcSales < breakEvenUnits ? (
-                      <span>💡 Info: You are making an operating profit of <strong>${monthlyProfit}/mo</strong>, but it will take about <strong>{Math.ceil(breakEvenUnits / calcSales)}</strong> months to recoup your initial <strong>${calcSetupCosts}</strong> setup costs.</span>
+                      <span style={{ display: 'flex', gap: '0.4rem', alignItems: 'flex-start' }}>
+                        <span style={{ flexShrink: 0 }}>💡</span>
+                        <span>Info: You are making an operating profit of <strong>${monthlyProfit}/mo</strong>, but it will take about <strong>{Math.ceil(breakEvenUnits / calcSales)}</strong> months to recoup your initial <strong>${calcSetupCosts}</strong> setup costs.</span>
+                      </span>
                     ) : (
-                      <span>🎉 Excellent! Your pricing model is highly viable. You will break even in your very first month of operating at this volume!</span>
+                      <span style={{ display: 'flex', gap: '0.4rem', alignItems: 'flex-start' }}>
+                        <span style={{ flexShrink: 0 }}>🎉</span>
+                        <span>Excellent! Your pricing model is highly viable. You will break even in your very first month of operating at this volume!</span>
+                      </span>
                     )}
                   </div>
                 </div>
