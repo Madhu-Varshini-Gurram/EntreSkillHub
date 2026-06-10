@@ -1,9 +1,9 @@
 import express from "express";
 import cors from "cors";
 import crypto from "crypto";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 import {
-  readDB,
-  writeDB,
   getUsers,
   getUserById,
   getUserByEmail,
@@ -20,12 +20,18 @@ import {
   getIdeaById,
   getSessions,
   createSession,
-  updateSession
+  updateSession,
+  createIdea,
+  deleteIdea
 } from "./dataStore.js";
+
+// Load Environment Variables
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const TOKEN_SECRET = "entreskill-secure-key-12345-june-2026";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/entreskill";
+const TOKEN_SECRET = process.env.TOKEN_SECRET || "entreskill-secure-key-12345-june-2026";
 
 // Middlewares
 app.use(cors());
@@ -92,23 +98,22 @@ app.get("/", (req, res) => {
 
 // 1. Health check & Initial Seed Info
 app.get("/api/health", (req, res) => {
-  res.json({ status: "ok", port: PORT, timestamp: new Date().toISOString() });
+  res.json({ status: "ok", database: "mongodb", port: PORT, timestamp: new Date().toISOString() });
 });
 
-
 // 2. Auth Endpoints
-app.post("/api/auth/register", (req, res) => {
+app.post("/api/auth/register", async (req, res) => {
   const { email, password, name, role } = req.body;
   if (!email || !password || !name) {
     return res.status(400).json({ error: "Email, password, and name are required." });
   }
-  const existingUser = getUserByEmail(email);
+  const existingUser = await getUserByEmail(email);
   if (existingUser) {
     return res.status(400).json({ error: "A user with this email already exists." });
   }
 
   const selectedRole = role === "mentor" || role === "admin" ? role : "user";
-  const user = createUser({
+  const user = await createUser({
     email,
     password, // In a real system, hash it
     name,
@@ -117,7 +122,7 @@ app.post("/api/auth/register", (req, res) => {
 
   // If registering as a mentor, create a pending mentor profile
   if (selectedRole === "mentor") {
-    createMentor({
+    await createMentor({
       userId: user.id,
       name: user.name,
       email: user.email,
@@ -134,12 +139,12 @@ app.post("/api/auth/register", (req, res) => {
   });
 });
 
-app.post("/api/auth/login", (req, res) => {
+app.post("/api/auth/login", async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ error: "Email and password are required." });
   }
-  const user = getUserByEmail(email);
+  const user = await getUserByEmail(email);
   if (!user || user.password !== password) {
     return res.status(400).json({ error: "Invalid email or password." });
   }
@@ -159,8 +164,8 @@ app.post("/api/auth/login", (req, res) => {
   });
 });
 
-app.get("/api/auth/me", authenticate, (req, res) => {
-  const user = getUserById(req.user.userId);
+app.get("/api/auth/me", authenticate, async (req, res) => {
+  const user = await getUserById(req.user.userId);
   if (!user) return res.status(404).json({ error: "User not found." });
   res.json({
     user: {
@@ -177,12 +182,12 @@ app.get("/api/auth/me", authenticate, (req, res) => {
 });
 
 // 3. User profiling updates
-app.put("/api/users/profile", authenticate, (req, res) => {
+app.put("/api/users/profile", authenticate, async (req, res) => {
   const { skills, interests } = req.body;
-  const user = getUserById(req.user.userId);
+  const user = await getUserById(req.user.userId);
   if (!user) return res.status(404).json({ error: "User not found." });
 
-  const updatedUser = updateUser(req.user.userId, {
+  const updatedUser = await updateUser(req.user.userId, {
     skills: skills || user.skills,
     interests: interests || user.interests
   });
@@ -201,18 +206,18 @@ app.put("/api/users/profile", authenticate, (req, res) => {
   });
 });
 
-// 4. Skills & Interests static collections
-app.get("/api/skills", (req, res) => {
-  res.json(getSkills());
+// 4. Skills & Interests collections
+app.get("/api/skills", async (req, res) => {
+  res.json(await getSkills());
 });
 
-app.get("/api/interests", (req, res) => {
-  res.json(getInterests());
+app.get("/api/interests", async (req, res) => {
+  res.json(await getInterests());
 });
 
 // 5. Business Ideas Recommendations
-app.get("/api/ideas", (req, res) => {
-  const ideas = getIdeas();
+app.get("/api/ideas", async (req, res) => {
+  const ideas = await getIdeas();
   
   // Optional query params to filter by skills or user profile
   const authHeader = req.headers["authorization"];
@@ -221,7 +226,7 @@ app.get("/api/ideas", (req, res) => {
     const token = authHeader.split(" ")[1];
     const decoded = verifyToken(token);
     if (decoded) {
-      currentUser = getUserById(decoded.userId);
+      currentUser = await getUserById(decoded.userId);
     }
   }
 
@@ -240,7 +245,8 @@ app.get("/api/ideas", (req, res) => {
       const interestIntersection = idea.interests.filter(i => userInterests.includes(i));
       score += interestIntersection.length * 5;
     }
-    return { ...idea, matchScore: Math.min(score, 100) };
+    const ideaObj = idea.toJSON ? idea.toJSON() : idea;
+    return { ...ideaObj, matchScore: Math.min(score, 100) };
   });
 
   // Sort by match score descending
@@ -248,69 +254,69 @@ app.get("/api/ideas", (req, res) => {
   res.json(calculatedIdeas);
 });
 
-app.get("/api/ideas/:id", (req, res) => {
-  const idea = getIdeaById(req.params.id);
+app.get("/api/ideas/:id", async (req, res) => {
+  const idea = await getIdeaById(req.params.id);
   if (!idea) return res.status(404).json({ error: "Business idea not found." });
   res.json(idea);
 });
 
 // 6. Progress and Bookmark Tracking
-app.post("/api/progress/toggle", authenticate, (req, res) => {
+app.post("/api/progress/toggle", authenticate, async (req, res) => {
   const { ideaId, stepId, itemText, checked } = req.body;
   if (!ideaId || !stepId) {
     return res.status(400).json({ error: "ideaId and stepId are required." });
   }
 
-  const user = getUserById(req.user.userId);
+  const user = await getUserById(req.user.userId);
   if (!user) return res.status(404).json({ error: "User not found." });
 
-  // completedSteps struct: { [ideaId]: { [stepId]: { completed: boolean, checklist: { [itemText]: boolean } } } }
-  const completedSteps = { ...user.completedSteps };
+  const completedSteps = user.completedSteps ? { ...user.completedSteps } : {};
   if (!completedSteps[ideaId]) completedSteps[ideaId] = {};
   if (!completedSteps[ideaId][stepId]) {
     completedSteps[ideaId][stepId] = { completed: false, checklist: {} };
   }
 
   if (itemText !== undefined) {
-    // Toggling a sub-checklist item
+    if (!completedSteps[ideaId][stepId].checklist) completedSteps[ideaId][stepId].checklist = {};
     completedSteps[ideaId][stepId].checklist[itemText] = checked;
   } else {
-    // Toggling the whole step completion status
     completedSteps[ideaId][stepId].completed = checked;
   }
 
-  const updatedUser = updateUser(req.user.userId, { completedSteps });
-  res.json({ completedSteps: updatedUser.completedSteps });
+  user.completedSteps = completedSteps;
+  user.markModified('completedSteps');
+  await user.save();
+
+  res.json({ completedSteps: user.completedSteps });
 });
 
-app.post("/api/progress/bookmark", authenticate, (req, res) => {
+app.post("/api/progress/bookmark", authenticate, async (req, res) => {
   const { ideaId } = req.body;
   if (!ideaId) return res.status(400).json({ error: "ideaId is required." });
 
-  const user = getUserById(req.user.userId);
+  const user = await getUserById(req.user.userId);
   if (!user) return res.status(404).json({ error: "User not found." });
 
-  let bookmarks = [...user.bookmarks];
+  let bookmarks = [...(user.bookmarks || [])];
   if (bookmarks.includes(ideaId)) {
     bookmarks = bookmarks.filter(id => id !== ideaId);
   } else {
     bookmarks.push(ideaId);
   }
 
-  const updatedUser = updateUser(req.user.userId, { bookmarks });
+  const updatedUser = await updateUser(req.user.userId, { bookmarks });
   res.json({ bookmarks: updatedUser.bookmarks });
 });
 
 // 7. Mentor Directory and Actions
-app.get("/api/mentors", (req, res) => {
-  const mentors = getMentors();
+app.get("/api/mentors", async (req, res) => {
+  const mentors = await getMentors();
   const authHeader = req.headers["authorization"];
   let decoded = null;
   if (authHeader && authHeader.startsWith("Bearer ")) {
     decoded = verifyToken(authHeader.split(" ")[1]);
   }
 
-  // Filter approved ones unless it is the admin or the mentor requesting their own
   const filtered = mentors.filter(m => {
     if (decoded && decoded.role === "admin") return true;
     if (decoded && m.userId === decoded.userId) return true;
@@ -320,12 +326,12 @@ app.get("/api/mentors", (req, res) => {
   res.json(filtered);
 });
 
-app.put("/api/mentors/profile", authenticate, (req, res) => {
-  const mentor = getMentorByUserId(req.user.userId);
+app.put("/api/mentors/profile", authenticate, async (req, res) => {
+  const mentor = await getMentorByUserId(req.user.userId);
   if (!mentor) return res.status(404).json({ error: "Mentor profile not found." });
 
   const { expertise, bio } = req.body;
-  const updatedMentor = updateMentor(mentor.id, {
+  const updatedMentor = await updateMentor(mentor.id, {
     expertise: expertise || mentor.expertise,
     bio: bio || mentor.bio
   });
@@ -333,16 +339,16 @@ app.put("/api/mentors/profile", authenticate, (req, res) => {
   res.json(updatedMentor);
 });
 
-app.post("/api/mentors/request", authenticate, (req, res) => {
+app.post("/api/mentors/request", authenticate, async (req, res) => {
   const { mentorId, question } = req.body;
   if (!mentorId || !question) {
     return res.status(400).json({ error: "mentorId and question are required." });
   }
 
-  const user = getUserById(req.user.userId);
+  const user = await getUserById(req.user.userId);
   if (!user) return res.status(404).json({ error: "User not found." });
 
-  const session = createSession({
+  const session = await createSession({
     mentorId,
     userId: user.id,
     userName: user.name,
@@ -353,33 +359,31 @@ app.post("/api/mentors/request", authenticate, (req, res) => {
   res.status(201).json(session);
 });
 
-app.get("/api/mentors/sessions", authenticate, (req, res) => {
-  const sessions = getSessions();
+app.get("/api/mentors/sessions", authenticate, async (req, res) => {
+  const sessions = await getSessions();
   const userRole = req.user.role;
 
   if (userRole === "mentor") {
-    const mentorProfile = getMentorByUserId(req.user.userId);
+    const mentorProfile = await getMentorByUserId(req.user.userId);
     if (!mentorProfile) return res.json([]);
     const filtered = sessions.filter(s => s.mentorId === mentorProfile.id);
     return res.json(filtered);
   } else if (userRole === "admin") {
     return res.json(sessions);
   } else {
-    // Regular entrepreneur user gets their sessions
     const filtered = sessions.filter(s => s.userId === req.user.userId);
     return res.json(filtered);
   }
 });
 
-app.patch("/api/mentors/sessions/:id", authenticate, (req, res) => {
-  const { status } = req.body; // approved, completed, rejected
+app.patch("/api/mentors/sessions/:id", authenticate, async (req, res) => {
+  const { status } = req.body;
   const sessionId = req.params.id;
 
-  const mentorProfile = getMentorByUserId(req.user.userId);
+  const mentorProfile = await getMentorByUserId(req.user.userId);
   const userRole = req.user.role;
 
-  // Verify that only the relevant mentor or admin can change the status
-  const sessions = getSessions();
+  const sessions = await getSessions();
   const session = sessions.find(s => s.id === sessionId);
   if (!session) return res.status(404).json({ error: "Session request not found." });
 
@@ -387,13 +391,12 @@ app.patch("/api/mentors/sessions/:id", authenticate, (req, res) => {
     return res.status(403).json({ error: "You are not authorized to update this session request." });
   }
 
-  const updatedSession = updateSession(sessionId, { status });
+  const updatedSession = await updateSession(sessionId, { status });
   res.json(updatedSession);
 });
 
-// Post a learning resource (Mentor only)
-app.post("/api/mentors/resources", authenticate, (req, res) => {
-  const mentorProfile = getMentorByUserId(req.user.userId);
+app.post("/api/mentors/resources", authenticate, async (req, res) => {
+  const mentorProfile = await getMentorByUserId(req.user.userId);
   if (!mentorProfile) return res.status(403).json({ error: "Only mentors can add resources." });
 
   const { title, type, url } = req.body;
@@ -401,7 +404,7 @@ app.post("/api/mentors/resources", authenticate, (req, res) => {
     return res.status(400).json({ error: "title, type, and url are required." });
   }
 
-  const resources = [...mentorProfile.resources];
+  const resources = [...(mentorProfile.resources || [])];
   const newResource = {
     id: `res_${Date.now()}`,
     title,
@@ -409,38 +412,38 @@ app.post("/api/mentors/resources", authenticate, (req, res) => {
     url
   };
   resources.push(newResource);
-  updateMentor(mentorProfile.id, { resources });
+  await updateMentor(mentorProfile.id, { resources });
 
   res.status(201).json(newResource);
 });
 
 // 8. Admin Operations
-app.get("/api/admin/users", authenticate, requireAdmin, (req, res) => {
-  res.json(getUsers().map(u => ({ id: u.id, name: u.name, email: u.email, role: u.role, registeredAt: u.registeredAt })));
+app.get("/api/admin/users", authenticate, requireAdmin, async (req, res) => {
+  const users = await getUsers();
+  res.json(users.map(u => ({ id: u.id, name: u.name, email: u.email, role: u.role, registeredAt: u.registeredAt })));
 });
 
-app.post("/api/admin/mentors/:id/approve", authenticate, requireAdmin, (req, res) => {
+app.post("/api/admin/mentors/:id/approve", authenticate, requireAdmin, async (req, res) => {
   const { approve } = req.body;
   const mentorId = req.params.id;
 
-  const mentor = getMentorById(mentorId);
+  const mentor = await getMentorById(mentorId);
   if (!mentor) return res.status(404).json({ error: "Mentor not found." });
 
-  const updatedMentor = updateMentor(mentorId, { approved: !!approve });
+  const updatedMentor = await updateMentor(mentorId, { approved: !!approve });
   res.json(updatedMentor);
 });
 
-// Admin add new idea or update existing
-app.post("/api/admin/ideas", authenticate, requireAdmin, (req, res) => {
-  const db = readDB();
+app.post("/api/admin/ideas", authenticate, requireAdmin, async (req, res) => {
   const { title, description, skills, interests, difficulty, steps } = req.body;
   
   if (!title || !description || !steps) {
     return res.status(400).json({ error: "title, description, and steps are required." });
   }
 
+  const ideaId = `idea_${Date.now()}`;
   const newIdea = {
-    id: `idea_${Date.now()}`,
+    id: ideaId,
     title,
     description,
     skills: skills || [],
@@ -455,19 +458,16 @@ app.post("/api/admin/ideas", authenticate, requireAdmin, (req, res) => {
     }))
   };
 
-  db.ideas.push(newIdea);
-  writeDB(db);
-  res.status(201).json(newIdea);
+  const savedIdea = await createIdea(newIdea);
+  res.status(201).json(savedIdea);
 });
 
-app.delete("/api/admin/ideas/:id", authenticate, requireAdmin, (req, res) => {
-  const db = readDB();
+app.delete("/api/admin/ideas/:id", authenticate, requireAdmin, async (req, res) => {
   const ideaId = req.params.id;
-  const exists = db.ideas.some(i => i.id === ideaId);
-  if (!exists) return res.status(404).json({ error: "Business idea not found." });
-
-  db.ideas = db.ideas.filter(i => i.id !== ideaId);
-  writeDB(db);
+  const result = await deleteIdea(ideaId);
+  if (result.deletedCount === 0) {
+    return res.status(404).json({ error: "Business idea not found." });
+  }
   res.json({ success: true, message: "Idea successfully deleted." });
 });
 
@@ -476,7 +476,15 @@ app.use((req, res) => {
   res.status(404).json({ error: "API endpoint not found." });
 });
 
-// Start Express Server
-app.listen(PORT, () => {
-  console.log(`EntreSkill Hub backend listening on http://localhost:${PORT}`);
-});
+// Connect to MongoDB then start Express Server
+console.log("Connecting to MongoDB database...");
+mongoose.connect(MONGODB_URI)
+  .then(() => {
+    console.log("Connected to MongoDB successfully.");
+    app.listen(PORT, () => {
+      console.log(`EntreSkill Hub backend listening on http://localhost:${PORT}`);
+    });
+  })
+  .catch(err => {
+    console.error("MongoDB connection error:", err);
+  });
