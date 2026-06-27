@@ -56,9 +56,4 @@ If you wish to run this project locally, follow these steps:
 3. Start the Vite development server: `npm run dev`
 *(The frontend will be accessible at http://localhost:5173)*
 
-## 📝 Résumé Highlights
 
-- Designed and implemented a complete MERN-style application from scratch for the Unified Mentor / SBA Problem Statement.
-- Integrated secure JWT authentication and role-based access control.
-- Built modular front-end architecture with reusable React components and an intuitive UI.
-- Configured MongoDB schema design for flexible business-idea data models and progress tracking.
