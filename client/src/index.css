@@ -183,6 +183,46 @@ body {
   align-items: center;
 }
 
+.nav-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .nav-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .mobile-menu-btn {
+    display: block;
+  }
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    padding: 1rem 0;
+  }
+  .nav-links.open {
+    display: flex;
+  }
+  .nav-btn, .btn-outline, .btn-premium {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
 .nav-btn {
   background: transparent;
   border: none;
@@ -194,6 +234,7 @@ body {
   padding: 0.5rem 0.75rem;
   border-radius: 8px;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .nav-btn:hover, .nav-btn.active {
@@ -218,6 +259,7 @@ body {
   border-radius: 30px;
   box-shadow: 0 4px 12px rgba(168, 85, 247, 0.25);
   transition: all 0.25s ease;
+  white-space: nowrap;
 }
 
 .btn-premium:hover {
@@ -241,6 +283,7 @@ body {
   padding: 0.5rem 1.25rem;
   border-radius: 30px;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .btn-outline:hover {
@@ -402,6 +445,11 @@ body {
   border-color: #818cf8;
   box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.25);
   background: rgba(255, 255, 255, 0.08);
+}
+
+.form-control option {
+  background-color: #ffffff;
+  color: #000000;
 }
 
 .form-row {
@@ -1054,7 +1102,7 @@ body::before {
 /* Vertical Timeline Roadmap */
 .timeline-container {
   position: relative;
-  padding-left: 3.5rem;
+  padding-left: 1rem;
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
@@ -1063,7 +1111,7 @@ body::before {
 
 .timeline-line {
   position: absolute;
-  left: 28px;
+  left: 32px; /* Center-aligned with the 34px node (16px padding + 17px half node - 1px half border) */
   top: 15px;
   bottom: 15px;
   width: 2px;
@@ -1074,13 +1122,14 @@ body::before {
 .timeline-item {
   position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1.5rem;
 }
 
 .timeline-node {
-  position: absolute;
-  left: -48px;
-  top: 10px;
+  position: relative;
+  flex-shrink: 0;
   width: 34px;
   height: 34px;
   border-radius: 50%;
@@ -1095,6 +1144,7 @@ body::before {
   color: var(--text-secondary);
   z-index: 2;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-top: 10px; /* Aligns visually with the top of the step card */
 }
 
 .timeline-item.completed .timeline-node {
@@ -1112,7 +1162,7 @@ body::before {
 
 .timeline-card {
   position: relative;
-  width: 100%;
+  flex: 1;
 }
 
 .timeline-card::before {

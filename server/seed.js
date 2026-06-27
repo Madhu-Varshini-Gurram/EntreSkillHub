@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
 import { User, Mentor, Idea, Session, Config } from './models.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -44,10 +45,12 @@ async function seed() {
     // Seed Users
     if (data.users && data.users.length > 0) {
       console.log(`Seeding ${data.users.length} users...`);
-      const usersToInsert = data.users.map(u => {
-        const { id, ...rest } = u;
-        return { _id: id, ...rest };
-      });
+      const usersToInsert = [];
+      for (const u of data.users) {
+        const { id, password, ...rest } = u;
+        const hashedPassword = await bcrypt.hash(password || 'password123', 10);
+        usersToInsert.push({ _id: id, password: hashedPassword, ...rest });
+      }
       await User.insertMany(usersToInsert);
     }
 

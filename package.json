@@ -1,0 +1,14 @@
+{
+  "name": "entreskill-hub",
+  "version": "1.0.0",
+  "description": "EntreSkill Hub Deployment Monorepo Package",
+  "scripts": {
+    "build": "npm install --prefix client && npm run build --prefix client && npm install --prefix server",
+    "start": "npm start --prefix server"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "",
+  "license": "ISC"
+}

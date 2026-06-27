@@ -153,14 +153,7 @@
       "expertise": "Tailoring & Crafting",
       "bio": "Fashion designer with 10+ years running custom design boutiques and community tailoring hubs.",
       "approved": true,
-      "resources": [
-        {
-          "id": "res_1",
-          "title": "Sourcing Fabrics Sustainably",
-          "type": "pdf",
-          "url": "https://example.com/fabrics-guide.pdf"
-        }
-      ]
+      "resources": []
     },
     {
       "id": "men_2",

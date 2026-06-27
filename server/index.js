@@ -1,8 +1,11 @@
 import express from "express";
 import cors from "cors";
-import crypto from "crypto";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import path from "path";
+import { fileURLToPath } from "url";
 import {
   getUsers,
   getUserById,
@@ -28,6 +31,9 @@ import {
 // Load Environment Variables
 dotenv.config();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/entreskill";
@@ -37,30 +43,14 @@ const TOKEN_SECRET = process.env.TOKEN_SECRET || "entreskill-secure-key-12345-ju
 app.use(cors());
 app.use(express.json());
 
-// Custom Token Utilities using native crypto
+// JWT Utilities
 function generateToken(userId, role) {
-  const payload = `${userId}:${role}:${Date.now()}`;
-  const hmac = crypto.createHmac("sha256", TOKEN_SECRET).update(payload).digest("hex");
-  return Buffer.from(`${payload}:${hmac}`).toString("base64");
+  return jwt.sign({ userId, role }, TOKEN_SECRET, { expiresIn: "24h" });
 }
 
 function verifyToken(token) {
-  if (!token) return null;
   try {
-    const raw = Buffer.from(token, "base64").toString("utf-8");
-    const parts = raw.split(":");
-    if (parts.length !== 4) return null;
-    const [userId, role, timestamp, sig] = parts;
-    
-    // Verify signature
-    const checkPayload = `${userId}:${role}:${timestamp}`;
-    const checkHmac = crypto.createHmac("sha256", TOKEN_SECRET).update(checkPayload).digest("hex");
-    if (checkHmac !== sig) return null;
-
-    // Check expiration (24 hours)
-    if (Date.now() - parseInt(timestamp, 10) > 24 * 60 * 60 * 1000) return null;
-
-    return { userId, role };
+    return jwt.verify(token, TOKEN_SECRET);
   } catch (err) {
     return null;
   }
@@ -103,7 +93,7 @@ app.get("/api/health", (req, res) => {
 
 // 2. Auth Endpoints
 app.post("/api/auth/register", async (req, res) => {
-  const { email, password, name, role } = req.body;
+  const { email, password, name, role, expertise } = req.body;
   if (!email || !password || !name) {
     return res.status(400).json({ error: "Email, password, and name are required." });
   }
@@ -112,21 +102,24 @@ app.post("/api/auth/register", async (req, res) => {
     return res.status(400).json({ error: "A user with this email already exists." });
   }
 
-  const selectedRole = role === "mentor" || role === "admin" ? role : "user";
+  const selectedRole = role === "mentor" ? role : "user";
+  const hashedPassword = await bcrypt.hash(password, 10);
+  
   const user = await createUser({
     email,
-    password, // In a real system, hash it
+    password: hashedPassword,
     name,
     role: selectedRole
   });
 
   // If registering as a mentor, create a pending mentor profile
+  let mentorApproved = false;
   if (selectedRole === "mentor") {
     await createMentor({
       userId: user.id,
       name: user.name,
       email: user.email,
-      expertise: "General",
+      expertise: expertise || "General",
       bio: "Newly registered mentor waiting to update profile.",
       approved: false
     });
@@ -135,7 +128,7 @@ app.post("/api/auth/register", async (req, res) => {
   const token = generateToken(user.id, user.role);
   res.status(201).json({
     token,
-    user: { id: user.id, email: user.email, name: user.name, role: user.role }
+    user: { id: user.id, email: user.email, name: user.name, role: user.role, mentorApproved }
   });
 });
 
@@ -145,8 +138,18 @@ app.post("/api/auth/login", async (req, res) => {
     return res.status(400).json({ error: "Email and password are required." });
   }
   const user = await getUserByEmail(email);
-  if (!user || user.password !== password) {
+  if (!user) {
     return res.status(400).json({ error: "Invalid email or password." });
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    return res.status(400).json({ error: "Invalid email or password." });
+  }
+  let mentorApproved = false;
+  if (user.role === "mentor") {
+    const mentorProfile = await getMentorByUserId(user.id);
+    if (mentorProfile) mentorApproved = mentorProfile.approved;
   }
   const token = generateToken(user.id, user.role);
   res.json({
@@ -156,6 +159,7 @@ app.post("/api/auth/login", async (req, res) => {
       email: user.email,
       name: user.name,
       role: user.role,
+      mentorApproved,
       skills: user.skills,
       interests: user.interests,
       bookmarks: user.bookmarks,
@@ -167,12 +171,18 @@ app.post("/api/auth/login", async (req, res) => {
 app.get("/api/auth/me", authenticate, async (req, res) => {
   const user = await getUserById(req.user.userId);
   if (!user) return res.status(404).json({ error: "User not found." });
+  let mentorApproved = false;
+  if (user.role === "mentor") {
+    const mentorProfile = await getMentorByUserId(user.id);
+    if (mentorProfile) mentorApproved = mentorProfile.approved;
+  }
   res.json({
     user: {
       id: user.id,
       email: user.email,
       name: user.name,
       role: user.role,
+      mentorApproved,
       skills: user.skills,
       interests: user.interests,
       bookmarks: user.bookmarks,
@@ -377,7 +387,7 @@ app.get("/api/mentors/sessions", authenticate, async (req, res) => {
 });
 
 app.patch("/api/mentors/sessions/:id", authenticate, async (req, res) => {
-  const { status } = req.body;
+  const { status, response } = req.body;
   const sessionId = req.params.id;
 
   const mentorProfile = await getMentorByUserId(req.user.userId);
@@ -391,7 +401,12 @@ app.patch("/api/mentors/sessions/:id", authenticate, async (req, res) => {
     return res.status(403).json({ error: "You are not authorized to update this session request." });
   }
 
-  const updatedSession = await updateSession(sessionId, { status });
+  const updates = { status };
+  if (response !== undefined) {
+    updates.response = response;
+  }
+
+  const updatedSession = await updateSession(sessionId, updates);
   res.json(updatedSession);
 });
 
@@ -471,9 +486,18 @@ app.delete("/api/admin/ideas/:id", authenticate, requireAdmin, async (req, res) 
   res.json({ success: true, message: "Idea successfully deleted." });
 });
 
-// Catch-all
-app.use((req, res) => {
+// Serve static frontend files (After API routes)
+const clientBuildPath = path.join(__dirname, "../client/dist");
+app.use(express.static(clientBuildPath));
+
+// API Catch-all
+app.use("/api/*", (req, res) => {
   res.status(404).json({ error: "API endpoint not found." });
+});
+
+// React Router Catch-all
+app.get("*", (req, res) => {
+  res.sendFile(path.join(clientBuildPath, "index.html"));
 });
 
 // Connect to MongoDB then start Express Server

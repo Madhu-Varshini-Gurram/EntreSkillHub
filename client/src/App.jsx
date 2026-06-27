@@ -2,42 +2,53 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 // SVG Icons as standard inline components
-const IconSkill = () => <svg className="selection-card-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>;
-const IconInterest = () => <svg className="selection-card-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>;
-const IconCheck = () => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>;
-const IconBookmark = ({ filled }) => <svg width="20" height="20" viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>;
-const IconCalendar = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>;
-const IconUpload = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>;
-const IconLogout = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>;
+const IconSkill = () => <svg className="selection-card-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" /></svg>;
+const IconInterest = () => <svg className="selection-card-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 8v8M8 12h8" /></svg>;
+const IconCheck = () => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>;
+const IconBookmark = ({ filled }) => <svg width="20" height="20" viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" /></svg>;
+const IconCalendar = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>;
+const IconUpload = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" /></svg>;
+const IconLogout = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" /></svg>;
+const IconMenu = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>;
+const IconX = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>;
+const IconEye = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>;
+const IconEyeOff = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>;
 
 function App() {
   const [view, setView] = useState('landing'); // landing, survey, ideas, roadmap, mentors, dashboard, auth
   const [authTab, setAuthTab] = useState('login'); // login, register
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const [user, setUser] = useState(null);
-  
+
   // Data lists
   const [skills, setSkills] = useState([]);
   const [interests, setInterests] = useState([]);
   const [ideas, setIdeas] = useState([]);
   const [mentors, setMentors] = useState([]);
   const [sessions, setSessions] = useState([]);
-  
+
   // Selection states
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [selectedInterests, setSelectedInterests] = useState([]);
   const [selectedIdea, setSelectedIdea] = useState(null);
-  
+
   // Form states
   const [authEmail, setAuthEmail] = useState('');
   const [authPassword, setAuthPassword] = useState('');
   const [authName, setAuthName] = useState('');
   const [authRole, setAuthRole] = useState('user'); // user, mentor, admin
-  
+  const [authExpertise, setAuthExpertise] = useState('');
+
   // Booking modal
   const [bookingMentor, setBookingMentor] = useState(null);
   const [bookingQuestion, setBookingQuestion] = useState('');
   const [bookingMessage, setBookingMessage] = useState('');
+
+  // Mentor Reply Modal
+  const [replyingSession, setReplyingSession] = useState(null);
+  const [replyText, setReplyText] = useState('');
 
   // Mentor upload resource
   const [resTitle, setResTitle] = useState('');
@@ -50,9 +61,10 @@ function App() {
   const [newIdeaSkills, setNewIdeaSkills] = useState([]);
   const [newIdeaInterests, setNewIdeaInterests] = useState([]);
   const [newIdeaDifficulty, setNewIdeaDifficulty] = useState('Medium');
-  
+
   // Notification states
   const [alertText, setAlertText] = useState('');
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
 
   // Interactive Calculator
   const [calcSales, setCalcSales] = useState(30);
@@ -66,18 +78,18 @@ function App() {
       fetch('/api/auth/me', {
         headers: { 'Authorization': `Bearer ${token}` }
       })
-      .then(res => {
-        if (!res.ok) throw new Error('Token expired');
-        return res.json();
-      })
-      .then(data => {
-        setUser(data.user);
-        setSelectedSkills(data.user.skills || []);
-        setSelectedInterests(data.user.interests || []);
-      })
-      .catch(() => {
-        logout();
-      });
+        .then(res => {
+          if (!res.ok) throw new Error('Token expired');
+          return res.json();
+        })
+        .then(data => {
+          setUser(data.user);
+          setSelectedSkills(data.user.skills || []);
+          setSelectedInterests(data.user.interests || []);
+        })
+        .catch(() => {
+          logout();
+        });
     }
   }, [token]);
 
@@ -101,93 +113,135 @@ function App() {
     }
   }, [user]);
 
-  const fetchIdeas = () => {
+  function fetchIdeas() {
     const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
     fetch('/api/ideas', { headers })
       .then(res => res.json())
       .then(setIdeas);
-  };
+  }
 
-  const fetchMentors = () => {
+  function fetchMentors() {
     const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
     fetch('/api/mentors', { headers })
       .then(res => res.json())
       .then(setMentors);
-  };
+  }
 
-  const fetchSessions = () => {
+  function fetchSessions() {
     fetch('/api/mentors/sessions', {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => res.json())
       .then(setSessions);
-  };
+  }
 
   const triggerAlert = (text) => {
     setAlertText(text);
-    setTimeout(() => setAlertText(''), 4000);
+    setIsAlertVisible(true);
+    setTimeout(() => {
+      setIsAlertVisible(false);
+      setTimeout(() => setAlertText(''), 400); // wait for fade out
+    }, 1000); // 1 second display
   };
 
   const login = (e) => {
     e.preventDefault();
+    if (!authEmail || !authPassword) {
+      triggerAlert('Please enter both email and password.');
+      return;
+    }
     fetch('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: authEmail, password: authPassword })
     })
-    .then(res => {
-      if (!res.ok) return res.json().then(data => { throw new Error(data.error); });
-      return res.json();
-    })
-    .then(data => {
-      localStorage.setItem('token', data.token);
-      setToken(data.token);
-      setUser(data.user);
-      setSelectedSkills(data.user.skills || []);
-      setSelectedInterests(data.user.interests || []);
-      
-      triggerAlert(`Welcome back, ${data.user.name}!`);
-      
-      // Route based on role
-      if (data.user.role === 'admin') {
-        setView('dashboard');
-      } else if (data.user.role === 'mentor') {
-        setView('dashboard');
-      } else {
-        setView(data.user.skills.length > 0 ? 'ideas' : 'survey');
-      }
-    })
-    .catch(err => {
-      triggerAlert(err.message);
-    });
+      .then(res => {
+        if (!res.ok) return res.json().then(data => { throw new Error(data.error); });
+        return res.json();
+      })
+      .then(data => {
+        localStorage.setItem('token', data.token);
+        setToken(data.token);
+        setUser(data.user);
+        setSelectedSkills(data.user.skills || []);
+        setSelectedInterests(data.user.interests || []);
+
+        // Clear form fields
+        setAuthEmail('');
+        setAuthPassword('');
+        setShowPassword(false);
+
+        // Route based on role
+        if (data.user.role === 'admin') {
+          triggerAlert(`Welcome back, ${data.user.name}!`);
+          setView('dashboard');
+        } else if (data.user.role === 'mentor') {
+          if (data.user.mentorApproved) {
+            triggerAlert(`Welcome back, ${data.user.name}!`);
+          } else {
+            triggerAlert(`Welcome back, ${data.user.name}! Your account is pending admin verification.`);
+          }
+          setView('dashboard');
+        } else {
+          triggerAlert(`Welcome back, ${data.user.name}!`);
+          setView(data.user.skills.length > 0 ? 'ideas' : 'survey');
+        }
+      })
+      .catch(err => {
+        triggerAlert(err.message);
+      });
   };
 
   const register = (e) => {
     e.preventDefault();
+    if (!authEmail || !authName || !authPassword) {
+      triggerAlert('Please fill in all required fields.');
+      return;
+    }
+    if (authPassword.length < 8) {
+      triggerAlert('Password must be at least 8 characters long.');
+      return;
+    }
+    const hasUpperCase = /[A-Z]/.test(authPassword);
+    const hasLowerCase = /[a-z]/.test(authPassword);
+    const hasNumbers = /\d/.test(authPassword);
+    if (!hasUpperCase || !hasLowerCase || !hasNumbers) {
+      triggerAlert('Password must contain uppercase, lowercase letters, and numbers.');
+      return;
+    }
     fetch('/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: authEmail, password: authPassword, name: authName, role: authRole })
+      body: JSON.stringify({ email: authEmail, password: authPassword, name: authName, role: authRole, expertise: authRole === 'mentor' ? authExpertise : undefined })
     })
-    .then(res => {
-      if (!res.ok) return res.json().then(data => { throw new Error(data.error); });
-      return res.json();
-    })
-    .then(data => {
-      localStorage.setItem('token', data.token);
-      setToken(data.token);
-      setUser(data.user);
-      setSelectedSkills([]);
-      setSelectedInterests([]);
-      triggerAlert('Account registered successfully!');
-      setView(data.user.role === 'user' ? 'survey' : 'dashboard');
-    })
-    .catch(err => {
-      triggerAlert(err.message);
-    });
+      .then(res => {
+        if (!res.ok) return res.json().then(data => { throw new Error(data.error); });
+        return res.json();
+      })
+      .then(data => {
+        localStorage.setItem('token', data.token);
+        setToken(data.token);
+        setUser(data.user);
+        setSelectedSkills([]);
+        setSelectedInterests([]);
+
+        // Clear form fields
+        setAuthEmail('');
+        setAuthPassword('');
+        setAuthName('');
+        setAuthRole('user');
+        setAuthExpertise('');
+        setShowPassword(false);
+
+        triggerAlert('Account registered successfully!');
+        setView(data.user.role === 'user' ? 'survey' : 'dashboard');
+      })
+      .catch(err => {
+        triggerAlert(err.message);
+      });
   };
 
-  const logout = () => {
+  function logout() {
     localStorage.removeItem('token');
     setToken('');
     setUser(null);
@@ -195,7 +249,7 @@ function App() {
     setSelectedInterests([]);
     setView('landing');
     triggerAlert('Logged out successfully.');
-  };
+  }
 
   const saveProfile = () => {
     if (!token) {
@@ -211,13 +265,13 @@ function App() {
       },
       body: JSON.stringify({ skills: selectedSkills, interests: selectedInterests })
     })
-    .then(res => res.json())
-    .then(data => {
-      setUser(data.user);
-      fetchIdeas();
-      setView('ideas');
-      triggerAlert('Profile saved! Here are your matches.');
-    });
+      .then(res => res.json())
+      .then(data => {
+        setUser(data.user);
+        fetchIdeas();
+        setView('ideas');
+        triggerAlert('Profile saved! Here are your matches.');
+      });
   };
 
   const toggleBookmark = (ideaId) => {
@@ -234,11 +288,11 @@ function App() {
       },
       body: JSON.stringify({ ideaId })
     })
-    .then(res => res.json())
-    .then(data => {
-      setUser(prev => ({ ...prev, bookmarks: data.bookmarks }));
-      triggerAlert(data.bookmarks.includes(ideaId) ? 'Idea bookmarked!' : 'Bookmark removed.');
-    });
+      .then(res => res.json())
+      .then(data => {
+        setUser(prev => ({ ...prev, bookmarks: data.bookmarks }));
+        triggerAlert(data.bookmarks.includes(ideaId) ? 'Idea bookmarked!' : 'Bookmark removed.');
+      });
   };
 
   const toggleChecklistItem = (ideaId, stepId, itemText, checked) => {
@@ -251,10 +305,10 @@ function App() {
       },
       body: JSON.stringify({ ideaId, stepId, itemText, checked })
     })
-    .then(res => res.json())
-    .then(data => {
-      setUser(prev => ({ ...prev, completedSteps: data.completedSteps }));
-    });
+      .then(res => res.json())
+      .then(data => {
+        setUser(prev => ({ ...prev, completedSteps: data.completedSteps }));
+      });
   };
 
   const toggleStepCompleted = (ideaId, stepId, checked) => {
@@ -267,11 +321,11 @@ function App() {
       },
       body: JSON.stringify({ ideaId, stepId, checked })
     })
-    .then(res => res.json())
-    .then(data => {
-      setUser(prev => ({ ...prev, completedSteps: data.completedSteps }));
-      triggerAlert(checked ? 'Step completed!' : 'Step set to in progress.');
-    });
+      .then(res => res.json())
+      .then(data => {
+        setUser(prev => ({ ...prev, completedSteps: data.completedSteps }));
+        triggerAlert(checked ? 'Step completed!' : 'Step set to in progress.');
+      });
   };
 
   const requestSession = (e) => {
@@ -284,39 +338,43 @@ function App() {
       },
       body: JSON.stringify({ mentorId: bookingMentor.id, question: bookingQuestion })
     })
-    .then(res => {
-      if (!res.ok) throw new Error('Failed to request session.');
-      return res.json();
-    })
-    .then(() => {
-      setBookingMessage('Request submitted! The mentor will review it shortly.');
-      setBookingQuestion('');
-      fetchSessions();
-      setTimeout(() => {
-        setBookingMentor(null);
-        setBookingMessage('');
-      }, 3000);
-    })
-    .catch(err => {
-      triggerAlert(err.message);
-    });
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to request session.');
+        return res.json();
+      })
+      .then(() => {
+        setBookingMessage('Request submitted! The mentor will review it shortly.');
+        setBookingQuestion('');
+        fetchSessions();
+        setTimeout(() => {
+          setBookingMentor(null);
+          setBookingMessage('');
+        }, 3000);
+      })
+      .catch(err => {
+        triggerAlert(err.message);
+      });
   };
 
   // Mentor dashboard actions
-  const handleSessionStatus = (sessionId, status) => {
+  const handleSessionStatus = (sessionId, status, response = undefined) => {
     fetch(`/api/mentors/sessions/${sessionId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({ status })
+      body: JSON.stringify({ status, response })
     })
-    .then(res => res.json())
-    .then(() => {
-      fetchSessions();
-      triggerAlert(`Session status updated to: ${status}`);
-    });
+      .then(res => res.json())
+      .then(() => {
+        fetchSessions();
+        triggerAlert(status === 'completed' ? 'Answer sent successfully!' : `Session status updated to: ${status}`);
+        if (status === 'completed' && response) {
+          setReplyingSession(null);
+          setReplyText('');
+        }
+      });
   };
 
   const uploadResource = (e) => {
@@ -329,17 +387,17 @@ function App() {
       },
       body: JSON.stringify({ title: resTitle, type: resType, url: resUrl })
     })
-    .then(res => {
-      if (!res.ok) throw new Error('Upload failed');
-      return res.json();
-    })
-    .then(() => {
-      triggerAlert('Learning resource uploaded successfully!');
-      setResTitle('');
-      setResUrl('');
-      fetchMentors();
-    })
-    .catch(err => triggerAlert(err.message));
+      .then(res => {
+        if (!res.ok) throw new Error('Upload failed');
+        return res.json();
+      })
+      .then(() => {
+        triggerAlert('Learning resource uploaded successfully!');
+        setResTitle('');
+        setResUrl('');
+        fetchMentors();
+      })
+      .catch(err => triggerAlert(err.message));
   };
 
   // Admin dashboard actions
@@ -352,11 +410,11 @@ function App() {
       },
       body: JSON.stringify({ approve })
     })
-    .then(res => res.json())
-    .then(() => {
-      fetchMentors();
-      triggerAlert(approve ? 'Mentor profile approved!' : 'Mentor profile unapproved.');
-    });
+      .then(res => res.json())
+      .then(() => {
+        fetchMentors();
+        triggerAlert(approve ? 'Mentor profile approved!' : 'Mentor profile unapproved.');
+      });
   };
 
   const createAdminIdea = (e) => {
@@ -384,19 +442,19 @@ function App() {
         steps: mockSteps
       })
     })
-    .then(res => {
-      if (!res.ok) throw new Error('Failed to create idea');
-      return res.json();
-    })
-    .then(() => {
-      triggerAlert('New Business Idea successfully created!');
-      setNewIdeaTitle('');
-      setNewIdeaDesc('');
-      setNewIdeaSkills([]);
-      setNewIdeaInterests([]);
-      fetchIdeas();
-    })
-    .catch(err => triggerAlert(err.message));
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to create idea');
+        return res.json();
+      })
+      .then(() => {
+        triggerAlert('New Business Idea successfully created!');
+        setNewIdeaTitle('');
+        setNewIdeaDesc('');
+        setNewIdeaSkills([]);
+        setNewIdeaInterests([]);
+        fetchIdeas();
+      })
+      .catch(err => triggerAlert(err.message));
   };
 
   // Progress metrics calculator helpers
@@ -466,12 +524,12 @@ function App() {
 
   const getNextRecommendedSteps = () => {
     if (!user || !user.completedSteps) return [];
-    
+
     const recommendations = [];
     Object.entries(user.completedSteps).forEach(([ideaId, stepsMap]) => {
       const idea = ideas.find(i => i.id === ideaId);
       if (!idea) return;
-      
+
       // Find the first step that is not completed
       const nextStep = idea.steps.find(s => !stepsMap[s.id]?.completed);
       if (nextStep) {
@@ -498,38 +556,50 @@ function App() {
   return (
     <div className="app-container">
       {/* Toast Alert */}
-      {alertText && (
-        <div className="modal-overlay" style={{ background: 'transparent', zIndex: 1100, pointerEvents: 'none' }}>
-          <div className="glass-panel animate-fade" style={{ background: 'rgba(18, 20, 29, 0.95)', border: '1px solid #c084fc', boxShadow: 'var(--shadow-glow)', pointerEvents: 'auto' }}>
-            <p style={{ margin: 0, fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ color: '#c084fc' }}>●</span> {alertText}
-            </p>
-          </div>
+      <div className="modal-overlay" style={{ 
+        background: 'transparent', zIndex: 1100, pointerEvents: 'none',
+        opacity: isAlertVisible ? 1 : 0,
+        visibility: alertText ? 'visible' : 'hidden',
+        transition: 'opacity 0.4s ease, visibility 0.4s ease'
+      }}>
+        <div className="glass-panel" style={{ 
+          background: 'rgba(18, 20, 29, 0.95)', border: '1px solid #c084fc', boxShadow: 'var(--shadow-glow)', pointerEvents: 'auto',
+          transform: isAlertVisible ? 'translateY(0)' : 'translateY(12px)',
+          transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+        }}>
+          <p style={{ margin: 0, fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span style={{ color: '#c084fc' }}>●</span> {alertText}
+          </p>
         </div>
-      )}
+      </div>
 
       {/* Navigation */}
       <nav className="navbar">
         <div className="container nav-container">
-          <a className="logo" onClick={() => setView('landing')}>
-            EntreSkill<span className="text-gradient">Hub</span>
-            <span className="logo-dot"></span>
-          </a>
-          <div className="nav-links">
-            <button className={`nav-btn ${view === 'landing' ? 'active' : ''}`} onClick={() => setView('landing')}>Home</button>
-            <button className={`nav-btn ${view === 'survey' ? 'active' : ''}`} onClick={() => setView('survey')}>Skill Wizard</button>
-            <button className={`nav-btn ${view === 'ideas' ? 'active' : ''}`} onClick={() => setView('ideas')}>Ideas</button>
-            <button className={`nav-btn ${view === 'mentors' ? 'active' : ''}`} onClick={() => setView('mentors')}>Mentors</button>
-            
+          <div className="nav-header">
+            <a className="logo" onClick={() => setView('landing')}>
+              EntreSkill<span className="text-gradient">Hub</span>
+              <span className="logo-dot"></span>
+            </a>
+            <button className="mobile-menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+              {isMobileMenuOpen ? <IconX /> : <IconMenu />}
+            </button>
+          </div>
+          <div className={`nav-links ${isMobileMenuOpen ? 'open' : ''}`}>
+            <button className={`nav-btn ${view === 'landing' ? 'active' : ''}`} onClick={() => { setView('landing'); setIsMobileMenuOpen(false); }}>Home</button>
+            <button className={`nav-btn ${view === 'survey' ? 'active' : ''}`} onClick={() => { setView('survey'); setIsMobileMenuOpen(false); }}>Skill Wizard</button>
+            <button className={`nav-btn ${view === 'ideas' ? 'active' : ''}`} onClick={() => { setView('ideas'); setIsMobileMenuOpen(false); }}>Ideas</button>
+            <button className={`nav-btn ${view === 'mentors' ? 'active' : ''}`} onClick={() => { setView('mentors'); setIsMobileMenuOpen(false); }}>Mentors</button>
+
             {user ? (
               <>
-                <button className={`nav-btn ${view === 'dashboard' ? 'active' : ''}`} onClick={() => setView('dashboard')}>Dashboard</button>
-                <button className="btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }} onClick={logout}>
+                <button className={`nav-btn ${view === 'dashboard' ? 'active' : ''}`} onClick={() => { setView('dashboard'); setIsMobileMenuOpen(false); }}>Dashboard</button>
+                <button className="btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }} onClick={() => { logout(); setIsMobileMenuOpen(false); }}>
                   <IconLogout /> Logout
                 </button>
               </>
             ) : (
-              <button className="btn-premium" onClick={() => { setAuthTab('login'); setView('auth'); }}>Sign In</button>
+              <button className="btn-premium" onClick={() => { setAuthTab('login'); setView('auth'); setIsMobileMenuOpen(false); }}>Sign In</button>
             )}
           </div>
         </div>
@@ -537,7 +607,7 @@ function App() {
 
       {/* Main Content Area */}
       <main className="container animate-fade" style={{ flex: 1, paddingTop: '2rem' }}>
-        
+
         {/* VIEW: Landing */}
         {view === 'landing' && (
           <div>
@@ -589,15 +659,15 @@ function App() {
           <div className="auth-container">
             <div className="glass-panel auth-form-card">
               <div style={{ display: 'flex', borderBottom: '1px solid var(--border-light)', marginBottom: '1.5rem' }}>
-                <button 
-                  className={`nav-btn`} 
+                <button
+                  className={`nav-btn`}
                   style={{ flex: 1, borderBottom: authTab === 'login' ? '2px solid #818cf8' : 'none', color: authTab === 'login' ? '#fff' : 'var(--text-secondary)' }}
                   onClick={() => setAuthTab('login')}
                 >
                   Log In
                 </button>
-                <button 
-                  className={`nav-btn`} 
+                <button
+                  className={`nav-btn`}
                   style={{ flex: 1, borderBottom: authTab === 'register' ? '2px solid #818cf8' : 'none', color: authTab === 'register' ? '#fff' : 'var(--text-secondary)' }}
                   onClick={() => setAuthTab('register')}
                 >
@@ -605,12 +675,7 @@ function App() {
                 </button>
               </div>
 
-              <div style={{ background: 'rgba(168, 85, 247, 0.08)', border: '1px solid rgba(168, 85, 247, 0.2)', padding: '0.85rem', borderRadius: '8px', fontSize: '0.8rem', color: '#d8b4fe', marginBottom: '1.25rem', lineHeight: '1.4', textAlign: 'left' }}>
-                <strong>💡 Demo Accounts (Password: <code>password123</code>)</strong><br/>
-                • Admin: <code>admin@entreskill.com</code><br/>
-                • Mentor: <code>mentor@entreskill.com</code><br/>
-                • User: <code>user@entreskill.com</code>
-              </div>
+
 
               {authTab === 'login' ? (
                 <form onSubmit={login}>
@@ -618,9 +683,12 @@ function App() {
                     <label>Email Address</label>
                     <input className="form-control" type="email" placeholder="email@example.com" value={authEmail} onChange={e => setAuthEmail(e.target.value)} required />
                   </div>
-                  <div className="form-group">
+                  <div className="form-group" style={{ position: 'relative' }}>
                     <label>Password</label>
-                    <input className="form-control" type="password" placeholder="••••••••" value={authPassword} onChange={e => setAuthPassword(e.target.value)} required />
+                    <input className="form-control" type={showPassword ? "text" : "password"} placeholder="••••••••" value={authPassword} onChange={e => setAuthPassword(e.target.value)} required style={{ paddingRight: '2.5rem' }} />
+                    <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: 'absolute', right: '0.75rem', top: '2.25rem', background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', padding: 0 }}>
+                      {showPassword ? <IconEyeOff /> : <IconEye />}
+                    </button>
                   </div>
                   <button className="btn-premium" style={{ width: '100%', marginTop: '1rem' }} type="submit">Sign In</button>
                 </form>
@@ -634,9 +702,26 @@ function App() {
                     <label>Email Address</label>
                     <input className="form-control" type="email" placeholder="email@example.com" value={authEmail} onChange={e => setAuthEmail(e.target.value)} required />
                   </div>
-                  <div className="form-group">
+                  <div className="form-group" style={{ position: 'relative' }}>
                     <label>Password</label>
-                    <input className="form-control" type="password" placeholder="••••••••" value={authPassword} onChange={e => setAuthPassword(e.target.value)} required />
+                    <input className="form-control" type={showPassword ? "text" : "password"} placeholder="••••••••" value={authPassword} onChange={e => setAuthPassword(e.target.value)} required style={{ paddingRight: '2.5rem' }} />
+                    <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: 'absolute', right: '0.75rem', top: '2.25rem', background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', padding: 0 }}>
+                      {showPassword ? <IconEyeOff /> : <IconEye />}
+                    </button>
+                    <div style={{ marginTop: '0.5rem', fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                      <div style={{ color: authPassword.length >= 8 ? '#2dd4bf' : 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                        {authPassword.length >= 8 ? <IconCheck /> : <span style={{ fontSize: '0.6rem' }}>○</span>} At least 8 characters
+                      </div>
+                      <div style={{ color: /[A-Z]/.test(authPassword) ? '#2dd4bf' : 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                        {/[A-Z]/.test(authPassword) ? <IconCheck /> : <span style={{ fontSize: '0.6rem' }}>○</span>} One uppercase letter
+                      </div>
+                      <div style={{ color: /[a-z]/.test(authPassword) ? '#2dd4bf' : 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                        {/[a-z]/.test(authPassword) ? <IconCheck /> : <span style={{ fontSize: '0.6rem' }}>○</span>} One lowercase letter
+                      </div>
+                      <div style={{ color: /\d/.test(authPassword) ? '#2dd4bf' : 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                        {/\d/.test(authPassword) ? <IconCheck /> : <span style={{ fontSize: '0.6rem' }}>○</span>} One number
+                      </div>
+                    </div>
                   </div>
                   <div className="form-group">
                     <label>Role</label>
@@ -645,6 +730,12 @@ function App() {
                       <option value="mentor">Professional Mentor</option>
                     </select>
                   </div>
+                  {authRole === 'mentor' && (
+                    <div className="form-group">
+                      <label>Area of Expertise</label>
+                      <input className="form-control" type="text" placeholder="e.g. Culinary Arts, Legal, Digital Marketing" value={authExpertise} onChange={e => setAuthExpertise(e.target.value)} required />
+                    </div>
+                  )}
                   <button className="btn-premium" style={{ width: '100%', marginTop: '1rem' }} type="submit">Create Account</button>
                 </form>
               )}
@@ -667,14 +758,14 @@ function App() {
               <h3 style={{ margin: '0 0 1.5rem 0', fontFamily: 'var(--font-heading)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <span className="text-gradient" style={{ fontSize: '1.5rem' }}>1.</span> Pick Your Skills
               </h3>
-              
+
               {categorizeSkills().map(cat => (
                 <div key={cat.title} className="survey-category-section">
                   <div className="survey-category-title">{cat.title}</div>
                   <div className="selection-grid" style={{ marginBottom: 0 }}>
                     {cat.items.map(s => (
-                      <div 
-                        key={s} 
+                      <div
+                        key={s}
                         className={`selection-card ${selectedSkills.includes(s) ? 'selected' : ''}`}
                         onClick={() => {
                           if (selectedSkills.includes(s)) {
@@ -695,14 +786,14 @@ function App() {
               <h3 style={{ margin: '2rem 0 1.5rem 0', fontFamily: 'var(--font-heading)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <span className="text-gradient" style={{ fontSize: '1.5rem' }}>2.</span> Pick Your Interests
               </h3>
-              
+
               {categorizeInterests().map(cat => (
                 <div key={cat.title} className="survey-category-section" style={{ borderColor: 'rgba(45, 212, 191, 0.05)' }}>
                   <div className="survey-category-title" style={{ color: '#2dd4bf' }}>{cat.title}</div>
                   <div className="selection-grid" style={{ marginBottom: 0 }}>
                     {cat.items.map(i => (
-                      <div 
-                        key={i} 
+                      <div
+                        key={i}
                         className={`selection-card ${selectedInterests.includes(i) ? 'selected' : ''}`}
                         style={{ borderColor: selectedInterests.includes(i) ? '#2dd4bf' : 'var(--border-light)' }}
                         onClick={() => {
@@ -754,15 +845,15 @@ function App() {
                         <div className="match-meter-wrapper">
                           <svg width="22" height="22" viewBox="0 0 36 36" className="match-svg-circle">
                             <circle cx="18" cy="18" r="15.915" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="3.5" />
-                            <circle cx="18" cy="18" r="15.915" fill="none" stroke="#2dd4bf" strokeWidth="3.5" 
-                                    strokeDasharray={`${idea.matchScore || 50} ${100 - (idea.matchScore || 50)}`} strokeDashoffset="25" />
+                            <circle cx="18" cy="18" r="15.915" fill="none" stroke="#2dd4bf" strokeWidth="3.5"
+                              strokeDasharray={`${idea.matchScore || 50} ${100 - (idea.matchScore || 50)}`} strokeDashoffset="25" />
                           </svg>
                           <span className="match-meter-percentage">{idea.matchScore || 50}% Match</span>
                         </div>
                       </div>
                       <h3 className="idea-title">{idea.title}</h3>
                       <p className="idea-desc">{idea.description}</p>
-                      
+
                       <div className="idea-tags">
                         {idea.skills.concat(idea.interests).map(t => (
                           <span key={t} className="badge badge-accent" style={{ fontSize: '0.7rem', padding: '0.15rem 0.5rem' }}>{t}</span>
@@ -774,7 +865,7 @@ function App() {
                       <button className="btn-premium" onClick={() => { setSelectedIdea(idea); setView('roadmap'); }}>
                         View Setup Roadmap
                       </button>
-                      <button 
+                      <button
                         className={`bookmark-btn ${isBookmarked ? 'active' : ''}`}
                         onClick={() => toggleBookmark(idea.id)}
                       >
@@ -791,46 +882,46 @@ function App() {
         {/* VIEW: Roadmap detail */}
         {view === 'roadmap' && selectedIdea && (
           <div>
-              <div style={{ marginBottom: '1.5rem' }}>
-                <button className="nav-btn" style={{ paddingLeft: 0, display: 'flex', alignItems: 'center', gap: '0.3rem' }} onClick={() => setView('ideas')}>
-                  ← Back to Matches
-                </button>
-              </div>
+            <div style={{ marginBottom: '1.5rem' }}>
+              <button className="nav-btn" style={{ paddingLeft: 0, display: 'flex', alignItems: 'center', gap: '0.3rem' }} onClick={() => setView('ideas')}>
+                ← Back to Matches
+              </button>
+            </div>
 
-              <div className="roadmap-container">
-                
-                {/* Main Timeline Column */}
-                <div className="roadmap-main">
-                  <div className="glass-panel roadmap-header-card" style={{ textAlign: 'left' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <h2 style={{ fontFamily: 'var(--font-heading)', margin: 0 }}>{selectedIdea.title} Setup Roadmap</h2>
-                      <span className="badge badge-primary">{selectedIdea.difficulty} Entry</span>
-                    </div>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', margin: '0.5rem 0 0 0' }}>
-                      Follow this step-by-step checklist to safely validation, register, finance and market your business.
-                    </p>
-                    
-                    {user && (
-                      <div style={{ marginTop: '1rem' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>
-                          <span>Roadmap Completion Progress</span>
-                          <span>{getCompletedCount(selectedIdea.id)} of {selectedIdea.steps.length} Steps Done</span>
-                        </div>
-                        <div className="progress-bar-container" style={{ margin: 0, height: '8px' }}>
-                          <div className="progress-bar" style={{ width: `${roadmapCompletionPct}%` }}></div>
-                        </div>
-                        <div style={{ marginTop: '0.75rem', fontSize: '0.85rem', color: '#c084fc', fontStyle: 'italic', fontWeight: 500 }}>
-                          {getCoachingMessage(Math.round(roadmapCompletionPct))}
-                        </div>
-                      </div>
-                    )}
+            <div className="roadmap-container">
+
+              {/* Main Timeline Column */}
+              <div className="roadmap-main">
+                <div className="glass-panel roadmap-header-card" style={{ textAlign: 'left' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h2 style={{ fontFamily: 'var(--font-heading)', margin: 0 }}>{selectedIdea.title} Setup Roadmap</h2>
+                    <span className="badge badge-primary">{selectedIdea.difficulty} Entry</span>
                   </div>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', margin: '0.5rem 0 0 0' }}>
+                    Follow this step-by-step checklist to safely validation, register, finance and market your business.
+                  </p>
+
+                  {user && (
+                    <div style={{ marginTop: '1rem' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>
+                        <span>Roadmap Completion Progress</span>
+                        <span>{getCompletedCount(selectedIdea.id)} of {selectedIdea.steps.length} Steps Done</span>
+                      </div>
+                      <div className="progress-bar-container" style={{ margin: 0, height: '8px' }}>
+                        <div className="progress-bar" style={{ width: `${roadmapCompletionPct}%` }}></div>
+                      </div>
+                      <div style={{ marginTop: '0.75rem', fontSize: '0.85rem', color: '#c084fc', fontStyle: 'italic', fontWeight: 500 }}>
+                        {getCoachingMessage(Math.round(roadmapCompletionPct))}
+                      </div>
+                    </div>
+                  )}
+                </div>
 
                 <div className="timeline-container">
                   <div className="timeline-line"></div>
                   {selectedIdea.steps.map((step, idx) => {
                     const isStepDone = user?.completedSteps?.[selectedIdea.id]?.[step.id]?.completed;
-                    
+
                     return (
                       <div key={step.id} className={`timeline-item ${isStepDone ? 'completed' : ''}`}>
                         <div className="timeline-node">
@@ -841,7 +932,7 @@ function App() {
                           <div className="step-title-row">
                             <h3 className="step-title">{step.title}</h3>
                             {user && (
-                              <button 
+                              <button
                                 className={`step-toggle-btn ${isStepDone ? 'completed' : ''}`}
                                 onClick={() => toggleStepCompleted(selectedIdea.id, step.id, !isStepDone)}
                               >
@@ -850,15 +941,15 @@ function App() {
                             )}
                           </div>
                           <p className="step-desc">{step.description}</p>
-                          
+
                           {step.checklist && step.checklist.length > 0 && (
                             <div className="checklist-container">
                               <div className="checklist-title">Startup Checklist:</div>
                               {step.checklist.map(item => {
                                 const isChecked = user?.completedSteps?.[selectedIdea.id]?.[step.id]?.checklist?.[item] || false;
                                 return (
-                                  <div 
-                                    key={item} 
+                                  <div
+                                    key={item}
                                     className={`checklist-item ${isChecked ? 'checked' : ''}`}
                                     onClick={() => toggleChecklistItem(selectedIdea.id, step.id, item, !isChecked)}
                                   >
@@ -880,11 +971,11 @@ function App() {
 
               {/* Sidebar Widgets Column */}
               <div className="roadmap-side">
-                
+
                 {/* Micro profit calculator widget */}
                 <div className="glass-panel calculator-card">
                   <h3 className="calculator-title">Startup Financial Estimator</h3>
-                  
+
                   <div className="form-group" style={{ marginBottom: '0.85rem' }}>
                     <label style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <span>Startup Setup Costs</span>
@@ -943,7 +1034,7 @@ function App() {
                     <span className="text-gradient">${monthlyProfit}/mo</span>
                   </div>
 
-                   <div className={`calc-verdict-box ${monthlyProfit > 0 ? 'positive' : 'neutral'}`}>
+                  <div className={`calc-verdict-box ${monthlyProfit > 0 ? 'positive' : 'neutral'}`}>
                     {marginPerUnit <= 0 ? (
                       <span style={{ display: 'flex', gap: '0.4rem', alignItems: 'flex-start' }}>
                         <span style={{ flexShrink: 0 }}>⚠️</span>
@@ -972,7 +1063,7 @@ function App() {
                 <div className="glass-panel" style={{ textAlign: 'left' }}>
                   <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', margin: '0 0 1rem 0' }}>Expert Mentors</h3>
                   <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>Get review feedback on your roadmap progress from verified advisors.</p>
-                  
+
                   {mentors.filter(m => m.approved).slice(0, 2).map(mentor => (
                     <div key={mentor.id} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', paddingBottom: '0.75rem' }}>
                       <div className="mentor-avatar" style={{ width: '40px', height: '40px', fontSize: '1rem' }}>
@@ -1030,8 +1121,8 @@ function App() {
                     )}
                   </div>
 
-                  <button 
-                    className="btn-premium" 
+                  <button
+                    className="btn-premium"
                     style={{ width: '100%' }}
                     onClick={() => {
                       if (!token) {
@@ -1042,7 +1133,7 @@ function App() {
                       }
                     }}
                   >
-                    Request Free Session
+                    Ask a Question
                   </button>
                 </div>
               ))}
@@ -1057,7 +1148,7 @@ function App() {
                   <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
                     Ask a question or request a review session with <strong>{bookingMentor.name}</strong>.
                   </p>
-                  
+
                   {bookingMessage ? (
                     <div style={{ color: '#2dd4bf', padding: '1rem 0', fontWeight: 600, textAlign: 'center' }}>
                       {bookingMessage}
@@ -1066,12 +1157,12 @@ function App() {
                     <form onSubmit={requestSession}>
                       <div className="form-group">
                         <label>Explain what you need help with (e.g. licensing, supply chain, pricing):</label>
-                        <textarea 
-                          className="form-control" 
-                          rows="4" 
+                        <textarea
+                          className="form-control"
+                          rows="4"
                           placeholder="Type your inquiry here..."
-                          value={bookingQuestion} 
-                          onChange={e => setBookingQuestion(e.target.value)} 
+                          value={bookingQuestion}
+                          onChange={e => setBookingQuestion(e.target.value)}
                           required
                         />
                       </div>
@@ -1086,290 +1177,343 @@ function App() {
 
         {/* VIEW: Personal Dashboards & Admin Panels */}
         {view === 'dashboard' && user && (
-          <div className="dashboard-grid">
-            
-            {/* Sidebar Profile card */}
-            <div className="dashboard-sidebar">
-              <div className="glass-panel dashboard-profile">
-                <div className="dashboard-avatar">{user.name[0]}</div>
-                <h3>{user.name}</h3>
-                <p style={{ textTransform: 'capitalize' }}>Role: <span className="badge badge-accent" style={{ fontSize: '0.65rem' }}>{user.role}</span></p>
-                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Registered: {new Date(user.registeredAt).toLocaleDateString()}</p>
-              </div>
+          <>
+            <div className="dashboard-grid">
 
-              <div className="glass-panel dashboard-menu">
-                <button className="dash-menu-item active">Overview Profile</button>
-                <button className="dash-menu-item" onClick={() => setView('ideas')}>Assessment Recommendations</button>
-                <button className="dash-menu-item" onClick={() => setView('mentors')}>Browse Mentors</button>
-              </div>
-            </div>
-
-            {/* Main Dashboard Panel */}
-            <div className="dashboard-main">
-              
-              {/* Stat Boxes */}
-              <div className="dash-stats-row">
-                <div className="glass-panel stat-card">
-                  <div className="stat-lbl">Bookmarked Ideas</div>
-                  <div className="stat-val text-gradient">{(user.bookmarks || []).length}</div>
-                </div>
-                <div className="glass-panel stat-card">
-                  <div className="stat-lbl">Active Roadmaps</div>
-                  <div className="stat-val text-gradient">{Object.keys(user.completedSteps || {}).length}</div>
-                </div>
-                <div className="glass-panel stat-card">
-                  <div className="stat-lbl">Mentor Inquiries</div>
-                  <div className="stat-val text-gradient">{sessions.length}</div>
-                </div>
-              </div>
-
-              {/* USER ROLE: Entrepreneur / User */}
-              {user.role === 'user' && (
-                <>
-                  {/* Next recommended steps */}
-                  {getNextRecommendedSteps().length > 0 && (
-                    <div className="glass-panel" style={{ textAlign: 'left', borderLeft: '4px solid #818cf8' }}>
-                      <h3 style={{ fontFamily: 'var(--font-heading)', margin: '0 0 1rem 0', fontSize: '1.25rem', color: '#c084fc', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <span>🎯 Recommended Next Action</span>
-                      </h3>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                        {getNextRecommendedSteps().map((rec, idx) => (
-                          <div key={idx} style={{ padding: '1.25rem', background: 'rgba(255, 255, 255, 0.02)', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-                              <strong style={{ fontSize: '1rem', color: '#fff' }}>{rec.ideaTitle}</strong>
-                              <span className="badge badge-primary" style={{ fontSize: '0.65rem' }}>{rec.stepPhase}</span>
-                            </div>
-                            <div style={{ fontSize: '0.95rem', fontWeight: 600, color: '#a855f7', marginBottom: '0.5rem' }}>{rec.stepTitle}</div>
-                            <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1rem', lineHeight: '1.5' }}>{rec.stepDesc}</div>
-                            <button className="btn-premium" style={{ fontSize: '0.8rem', padding: '0.45rem 1rem' }} onClick={() => { setSelectedIdea(rec.idea); setView('roadmap'); }}>
-                              Go to Checklist
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+              {/* Sidebar Profile card */}
+              <div className="dashboard-sidebar">
+                <div className="glass-panel dashboard-profile">
+                  <div className="dashboard-avatar">{user.name[0]}</div>
+                  <h3>{user.name}</h3>
+                  <p style={{ textTransform: 'capitalize' }}>Role: <span className="badge badge-accent" style={{ fontSize: '0.65rem' }}>{user.role}</span></p>
+                  {user.role === 'mentor' && (
+                    <p style={{ marginTop: '0.5rem' }}>
+                      <span className={`badge ${user.mentorApproved ? 'badge-accent' : 'badge-warning'}`} style={{ fontSize: '0.65rem' }}>
+                        Status: {user.mentorApproved ? 'Approved' : 'Pending Verification'}
+                      </span>
+                    </p>
                   )}
+                </div>
 
-                  {/* Bookmarked Ideas */}
-                  <div className="glass-panel" style={{ textAlign: 'left' }}>
-                    <h3 style={{ fontFamily: 'var(--font-heading)', margin: '0 0 1.25rem 0', fontSize: '1.25rem' }}>Saved Startup Projects</h3>
-                    {user.bookmarks && user.bookmarks.length > 0 ? (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        {ideas.filter(i => user.bookmarks.includes(i.id)).map(idea => (
-                          <div key={idea.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', paddingBottom: '0.75rem' }}>
-                            <div>
-                              <div style={{ fontWeight: 600 }}>{idea.title}</div>
-                              <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{idea.description.slice(0, 100)}...</div>
-                            </div>
-                            <button className="btn-outline" style={{ fontSize: '0.8rem', padding: '0.35rem 0.85rem' }} onClick={() => { setSelectedIdea(idea); setView('roadmap'); }}>
-                              Open Roadmap
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>You haven't bookmarked any business ideas yet. Browse ideas to bookmark your favorites.</p>
-                    )}
+                <div className="glass-panel dashboard-menu">
+                  <button className="dash-menu-item active">Overview Profile</button>
+                  <button className="dash-menu-item" onClick={() => setView('ideas')}>Assessment Recommendations</button>
+                  <button className="dash-menu-item" onClick={() => setView('mentors')}>Browse Mentors</button>
+                </div>
+              </div>
+
+              {/* Main Dashboard Panel */}
+              <div className="dashboard-main">
+
+                {/* Stat Boxes */}
+                <div className="dash-stats-row">
+                  <div className="glass-panel stat-card">
+                    <div className="stat-lbl">Bookmarked Ideas</div>
+                    <div className="stat-val text-gradient">{(user.bookmarks || []).length}</div>
                   </div>
+                  <div className="glass-panel stat-card">
+                    <div className="stat-lbl">Active Roadmaps</div>
+                    <div className="stat-val text-gradient">{Object.keys(user.completedSteps || {}).length}</div>
+                  </div>
+                  <div className="glass-panel stat-card">
+                    <div className="stat-lbl">Mentor Inquiries</div>
+                    <div className="stat-val text-gradient">{sessions.length}</div>
+                  </div>
+                </div>
 
-                  {/* Requested Mentor Sessions */}
-                  <div className="glass-panel" style={{ textAlign: 'left' }}>
-                    <h3 style={{ fontFamily: 'var(--font-heading)', margin: '0 0 1.25rem 0', fontSize: '1.25rem' }}>Mentorship Inquiries</h3>
-                    {sessions.length > 0 ? (
-                      <table className="session-table">
-                        <thead>
-                          <tr>
-                            <th>Mentor</th>
-                            <th>Question / Topic</th>
-                            <th>Requested At</th>
-                            <th>Status</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {sessions.map(s => {
-                            const m = mentors.find(x => x.id === s.mentorId);
-                            return (
+                {/* USER ROLE: Entrepreneur / User */}
+                {user.role === 'user' && (
+                  <>
+                    {/* Next recommended steps */}
+                    {getNextRecommendedSteps().length > 0 && (
+                      <div className="glass-panel" style={{ textAlign: 'left', borderLeft: '4px solid #818cf8' }}>
+                        <h3 style={{ fontFamily: 'var(--font-heading)', margin: '0 0 1rem 0', fontSize: '1.25rem', color: '#c084fc', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <span>🎯 Recommended Next Action</span>
+                        </h3>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                          {getNextRecommendedSteps().map((rec, idx) => (
+                            <div key={idx} style={{ padding: '1.25rem', background: 'rgba(255, 255, 255, 0.02)', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                <strong style={{ fontSize: '1rem', color: '#fff' }}>{rec.ideaTitle}</strong>
+                                <span className="badge badge-primary" style={{ fontSize: '0.65rem' }}>{rec.stepPhase}</span>
+                              </div>
+                              <div style={{ fontSize: '0.95rem', fontWeight: 600, color: '#a855f7', marginBottom: '0.5rem' }}>{rec.stepTitle}</div>
+                              <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1rem', lineHeight: '1.5' }}>{rec.stepDesc}</div>
+                              <button className="btn-premium" style={{ fontSize: '0.8rem', padding: '0.45rem 1rem' }} onClick={() => { setSelectedIdea(rec.idea); setView('roadmap'); }}>
+                                Go to Checklist
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Bookmarked Ideas */}
+                    <div className="glass-panel" style={{ textAlign: 'left' }}>
+                      <h3 style={{ fontFamily: 'var(--font-heading)', margin: '0 0 1.25rem 0', fontSize: '1.25rem' }}>Saved Startup Projects</h3>
+                      {user.bookmarks && user.bookmarks.length > 0 ? (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                          {ideas.filter(i => user.bookmarks.includes(i.id)).map(idea => (
+                            <div key={idea.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', paddingBottom: '0.75rem' }}>
+                              <div>
+                                <div style={{ fontWeight: 600 }}>{idea.title}</div>
+                                <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{idea.description.slice(0, 100)}...</div>
+                              </div>
+                              <button className="btn-outline" style={{ fontSize: '0.8rem', padding: '0.35rem 0.85rem' }} onClick={() => { setSelectedIdea(idea); setView('roadmap'); }}>
+                                Open Roadmap
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>You haven't bookmarked any business ideas yet. Browse ideas to bookmark your favorites.</p>
+                      )}
+                    </div>
+
+                    {/* Requested Mentor Sessions */}
+                    <div className="glass-panel" style={{ textAlign: 'left' }}>
+                      <h3 style={{ fontFamily: 'var(--font-heading)', margin: '0 0 1.25rem 0', fontSize: '1.25rem' }}>Mentorship Inquiries</h3>
+                      {sessions.length > 0 ? (
+                        <table className="session-table">
+                          <thead>
+                            <tr>
+                              <th>Mentor</th>
+                              <th>Question / Topic</th>
+                              <th>Requested At</th>
+                              <th>Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {sessions.map(s => {
+                              const m = mentors.find(x => x.id === s.mentorId);
+                              return (
+                                <tr key={s.id}>
+                                  <td style={{ fontWeight: 600 }}>{m ? m.name : 'Unknown Mentor'}</td>
+                                  <td>
+                                    <div>{s.question}</div>
+                                    {s.response && (
+                                      <div style={{ marginTop: '0.75rem', background: 'rgba(45, 212, 191, 0.1)', borderLeft: '3px solid #2dd4bf', padding: '0.75rem', borderRadius: '0.25rem', fontSize: '0.9rem' }}>
+                                        <strong style={{ color: '#2dd4bf', display: 'block', marginBottom: '0.25rem' }}>Mentor's Answer:</strong>
+                                        <span style={{ color: 'var(--text-primary)' }}>{s.response}</span>
+                                      </div>
+                                    )}
+                                  </td>
+                                  <td>{new Date(s.requestedAt).toLocaleDateString()}</td>
+                                  <td>
+                                    <span className={`status-indicator ${s.status === 'pending' ? 'badge-warning' : s.status === 'approved' ? 'badge-accent' : 'badge-primary'} badge`}>
+                                      {s.status}
+                                    </span>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      ) : (
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>No session requests made yet.</p>
+                      )}
+                    </div>
+                  </>
+                )}
+
+                {/* USER ROLE: Mentor Dashboard */}
+                {user.role === 'mentor' && !user.mentorApproved && (
+                  <div className="glass-panel" style={{ textAlign: 'center', padding: '3rem 1rem' }}>
+                    <span style={{ fontSize: '3rem', display: 'block', marginBottom: '1rem' }}>⏳</span>
+                    <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', marginBottom: '1rem', color: '#fb923c' }}>Profile Pending Verification</h3>
+                    <p style={{ color: 'var(--text-secondary)', maxWidth: '500px', margin: '0 auto', lineHeight: '1.6' }}>
+                      Your mentor profile has been successfully registered and is currently waiting for admin approval. Once verified, you will be able to access your dashboard to answer inquiries and upload learning resources.
+                    </p>
+                  </div>
+                )}
+                {user.role === 'mentor' && user.mentorApproved && (
+                  <>
+                    {/* Handle bookings list */}
+                    <div className="glass-panel" style={{ textAlign: 'left' }}>
+                      <h3 style={{ fontFamily: 'var(--font-heading)', margin: '0 0 1.25rem 0', fontSize: '1.25rem' }}>Mentees Inquiries Requests</h3>
+                      {sessions.length > 0 ? (
+                        <table className="session-table">
+                          <thead>
+                            <tr>
+                              <th>Mentee Name</th>
+                              <th>Question details</th>
+                              <th>Requested Date</th>
+                              <th>Status</th>
+                              <th>Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {sessions.map(s => (
                               <tr key={s.id}>
-                                <td style={{ fontWeight: 600 }}>{m ? m.name : 'Unknown Mentor'}</td>
+                                <td style={{ fontWeight: 600 }}>{s.userName}</td>
                                 <td>{s.question}</td>
                                 <td>{new Date(s.requestedAt).toLocaleDateString()}</td>
                                 <td>
-                                  <span className={`status-indicator ${s.status === 'pending' ? 'badge-warning' : s.status === 'approved' ? 'badge-accent' : 'badge-primary'} badge`}>
+                                  <span className={`badge ${s.status === 'pending' ? 'badge-warning' : s.status === 'approved' ? 'badge-accent' : 'badge-primary'}`}>
                                     {s.status}
                                   </span>
                                 </td>
+                                <td>
+                                  {s.status === 'pending' && (
+                                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                      <button className="btn-premium" style={{ padding: '0.25rem 0.65rem', fontSize: '0.75rem' }} onClick={() => setReplyingSession(s)}>Answer</button>
+                                      <button className="btn-outline" style={{ padding: '0.25rem 0.65rem', fontSize: '0.75rem', borderColor: 'rgba(239, 68, 68, 0.4)', color: '#ef4444' }} onClick={() => handleSessionStatus(s.id, 'rejected')}>Reject</button>
+                                    </div>
+                                  )}
+                                  {s.status === 'approved' && (
+                                    <button className="btn-premium" style={{ padding: '0.25rem 0.65rem', fontSize: '0.75rem' }} onClick={() => setReplyingSession(s)}>Answer</button>
+                                  )}
+                                  {s.status === 'completed' && <span style={{ fontSize: '0.8rem', color: '#2dd4bf', fontWeight: 600 }}>Answered</span>}
+                                </td>
                               </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    ) : (
-                      <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>No session requests made yet.</p>
-                    )}
-                  </div>
-                </>
-              )}
+                            ))}
 
-              {/* USER ROLE: Mentor Dashboard */}
-              {user.role === 'mentor' && (
-                <>
-                  {/* Handle bookings list */}
-                  <div className="glass-panel" style={{ textAlign: 'left' }}>
-                    <h3 style={{ fontFamily: 'var(--font-heading)', margin: '0 0 1.25rem 0', fontSize: '1.25rem' }}>Mentees Inquiries Requests</h3>
-                    {sessions.length > 0 ? (
-                      <table className="session-table">
-                        <thead>
-                          <tr>
-                            <th>Mentee Name</th>
-                            <th>Question details</th>
-                            <th>Requested Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {sessions.map(s => (
-                            <tr key={s.id}>
-                              <td style={{ fontWeight: 600 }}>{s.userName}</td>
-                              <td>{s.question}</td>
-                              <td>{new Date(s.requestedAt).toLocaleDateString()}</td>
-                              <td>
-                                <span className={`badge ${s.status === 'pending' ? 'badge-warning' : s.status === 'approved' ? 'badge-accent' : 'badge-primary'}`}>
-                                  {s.status}
-                                </span>
-                              </td>
-                              <td>
-                                {s.status === 'pending' && (
-                                  <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                    <button className="btn-premium" style={{ padding: '0.25rem 0.65rem', fontSize: '0.75rem' }} onClick={() => handleSessionStatus(s.id, 'approved')}>Accept</button>
-                                    <button className="btn-outline" style={{ padding: '0.25rem 0.65rem', fontSize: '0.75rem', borderColor: 'rgba(239, 68, 68, 0.4)', color: '#ef4444' }} onClick={() => handleSessionStatus(s.id, 'rejected')}>Reject</button>
-                                  </div>
-                                )}
-                                {s.status === 'approved' && (
-                                  <button className="btn-outline" style={{ padding: '0.25rem 0.65rem', fontSize: '0.75rem' }} onClick={() => handleSessionStatus(s.id, 'completed')}>Complete Session</button>
-                                )}
-                                {s.status === 'completed' && <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Archived</span>}
-                              </td>
-                            </tr>
-                          ))}
-
-                        </tbody>
-                      </table>
-                    ) : (
-                      <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>No pending inquiries from mentees found.</p>
-                    )}
-                  </div>
-
-                  {/* Upload new resource guides */}
-                  <div className="glass-panel" style={{ textAlign: 'left' }}>
-                    <h3 style={{ fontFamily: 'var(--font-heading)', margin: '0 0 1.25rem 0', fontSize: '1.25rem' }}>Upload Learning Resource</h3>
-                    <form onSubmit={uploadResource} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      <div className="form-group">
-                        <label>Guide / PDF Title</label>
-                        <input className="form-control" type="text" placeholder="e.g. Sourcing Local Woodworking Materials" value={resTitle} onChange={e => setResTitle(e.target.value)} required />
-                      </div>
-                      <div className="form-row">
-                        <div className="form-group" style={{ flex: 1 }}>
-                          <label>Resource Format</label>
-                          <select className="form-control" value={resType} onChange={e => setResType(e.target.value)}>
-                            <option value="pdf">PDF Manual</option>
-                            <option value="video">Video Guide</option>
-                            <option value="article">Article/Checklist</option>
-                          </select>
-                        </div>
-                        <div className="form-group" style={{ flex: 2 }}>
-                          <label>Resource Link / URL</label>
-                          <input className="form-control" type="url" placeholder="https://example.com/guide" value={resUrl} onChange={e => setResUrl(e.target.value)} required />
-                        </div>
-                      </div>
-                      <button className="btn-premium" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }} type="submit">
-                        <IconUpload /> Publish Resource Link
-                      </button>
-                    </form>
-                  </div>
-                </>
-              )}
-
-              {/* USER ROLE: Admin Panel Dashboard */}
-              {user.role === 'admin' && (
-                <>
-                  {/* Mentor Verifications */}
-                  <div className="glass-panel" style={{ textAlign: 'left' }}>
-                    <h3 style={{ fontFamily: 'var(--font-heading)', margin: '0 0 1.25rem 0', fontSize: '1.25rem' }}>Mentor Approval & Verification</h3>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      {mentors.map(m => (
-                        <div key={m.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', paddingBottom: '0.75rem' }}>
-                          <div>
-                            <div style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                              {m.name}
-                              <span className={`badge ${m.approved ? 'badge-accent' : 'badge-warning'}`} style={{ fontSize: '0.65rem' }}>
-                                {m.approved ? 'Approved' : 'Pending Verification'}
-                              </span>
-                            </div>
-                            <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Expertise: {m.expertise} | Contact: {m.email}</div>
-                          </div>
-                          <div>
-                            {m.approved ? (
-                              <button className="btn-outline" style={{ fontSize: '0.75rem', padding: '0.3rem 0.65rem', color: '#ef4444', borderColor: 'rgba(239, 68, 68, 0.3)' }} onClick={() => handleApproveMentor(m.id, false)}>Revoke</button>
-                            ) : (
-                              <button className="btn-premium" style={{ fontSize: '0.75rem', padding: '0.3rem 0.65rem' }} onClick={() => handleApproveMentor(m.id, true)}>Approve Profile</button>
-                            )}
-                          </div>
-                        </div>
-                      ))}
+                          </tbody>
+                        </table>
+                      ) : (
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>No pending inquiries from mentees found.</p>
+                      )}
                     </div>
-                  </div>
 
-                  {/* Add new ideas and roadmaps database catalog */}
-                  <div className="glass-panel" style={{ textAlign: 'left' }}>
-                    <h3 style={{ fontFamily: 'var(--font-heading)', margin: '0 0 1.25rem 0', fontSize: '1.25rem' }}>Create New Business Idea</h3>
-                    <form onSubmit={createAdminIdea} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      <div className="form-group">
-                        <label>Business Idea Title</label>
-                        <input className="form-control" type="text" placeholder="e.g. Local Organic Soap Production" value={newIdeaTitle} onChange={e => setNewIdeaTitle(e.target.value)} required />
-                      </div>
-                      <div className="form-group">
-                        <label>Description Summary</label>
-                        <textarea className="form-control" placeholder="Provide a summary of required work and business viability..." value={newIdeaDesc} onChange={e => setNewIdeaDesc(e.target.value)} required />
-                      </div>
-
-                      <div className="form-row">
-                        <div className="form-group" style={{ flex: 1 }}>
-                          <label>Required Skill Tag</label>
-                          <select className="form-control" onChange={e => setNewIdeaSkills([e.target.value])}>
-                            <option value="">Choose Skill...</option>
-                            {skills.map(s => <option key={s} value={s}>{s}</option>)}
-                          </select>
+                    {/* Upload new resource guides */}
+                    <div className="glass-panel" style={{ textAlign: 'left' }}>
+                      <h3 style={{ fontFamily: 'var(--font-heading)', margin: '0 0 1.25rem 0', fontSize: '1.25rem' }}>Upload Learning Resource</h3>
+                      <form onSubmit={uploadResource} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <div className="form-group">
+                          <label>Guide / PDF Title</label>
+                          <input className="form-control" type="text" placeholder="e.g. Sourcing Local Woodworking Materials" value={resTitle} onChange={e => setResTitle(e.target.value)} required />
                         </div>
-                        <div className="form-group" style={{ flex: 1 }}>
-                          <label>Core Interest Area</label>
-                          <select className="form-control" onChange={e => setNewIdeaInterests([e.target.value])}>
-                            <option value="">Choose Interest...</option>
-                            {interests.map(i => <option key={i} value={i}>{i}</option>)}
-                          </select>
+                        <div className="form-row">
+                          <div className="form-group" style={{ flex: 1 }}>
+                            <label>Resource Format</label>
+                            <select className="form-control" value={resType} onChange={e => setResType(e.target.value)}>
+                              <option value="pdf">PDF Manual</option>
+                              <option value="video">Video Guide</option>
+                              <option value="article">Article/Checklist</option>
+                            </select>
+                          </div>
+                          <div className="form-group" style={{ flex: 2 }}>
+                            <label>Resource Link / URL</label>
+                            <input className="form-control" type="url" placeholder="https://example.com/guide" value={resUrl} onChange={e => setResUrl(e.target.value)} required />
+                          </div>
                         </div>
-                        <div className="form-group" style={{ flex: 1 }}>
-                          <label>Setup Difficulty</label>
-                          <select className="form-control" value={newIdeaDifficulty} onChange={e => setNewIdeaDifficulty(e.target.value)}>
-                            <option value="Easy">Easy</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Hard">Hard</option>
-                          </select>
-                        </div>
+                        <button className="btn-premium" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }} type="submit">
+                          <IconUpload /> Publish Resource Link
+                        </button>
+                      </form>
+                    </div>
+                  </>
+                )}
+
+                {/* USER ROLE: Admin Panel Dashboard */}
+                {user.role === 'admin' && (
+                  <>
+                    {/* Mentor Verifications */}
+                    <div className="glass-panel" style={{ textAlign: 'left' }}>
+                      <h3 style={{ fontFamily: 'var(--font-heading)', margin: '0 0 1.25rem 0', fontSize: '1.25rem' }}>Mentor Approval & Verification</h3>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        {mentors.map(m => (
+                          <div key={m.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', paddingBottom: '0.75rem' }}>
+                            <div>
+                              <div style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                {m.name}
+                                <span className={`badge ${m.approved ? 'badge-accent' : 'badge-warning'}`} style={{ fontSize: '0.65rem' }}>
+                                  {m.approved ? 'Approved' : 'Pending Verification'}
+                                </span>
+                              </div>
+                              <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Expertise: {m.expertise} | Contact: {m.email}</div>
+                            </div>
+                            <div>
+                              {m.approved ? (
+                                <button className="btn-outline" style={{ fontSize: '0.75rem', padding: '0.3rem 0.65rem', color: '#ef4444', borderColor: 'rgba(239, 68, 68, 0.3)' }} onClick={() => handleApproveMentor(m.id, false)}>Revoke</button>
+                              ) : (
+                                <button className="btn-premium" style={{ fontSize: '0.75rem', padding: '0.3rem 0.65rem' }} onClick={() => handleApproveMentor(m.id, true)}>Approve Profile</button>
+                              )}
+                            </div>
+                          </div>
+                        ))}
                       </div>
+                    </div>
 
-                      <button className="btn-premium" style={{ padding: '0.75rem', marginTop: '0.5rem' }} type="submit">
-                        Publish Idea & Checklist Template
-                      </button>
-                    </form>
-                  </div>
-                </>
-              )}
+                    {/* Add new ideas and roadmaps database catalog */}
+                    <div className="glass-panel" style={{ textAlign: 'left' }}>
+                      <h3 style={{ fontFamily: 'var(--font-heading)', margin: '0 0 1.25rem 0', fontSize: '1.25rem' }}>Create New Business Idea</h3>
+                      <form onSubmit={createAdminIdea} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <div className="form-group">
+                          <label>Business Idea Title</label>
+                          <input className="form-control" type="text" placeholder="e.g. Local Organic Soap Production" value={newIdeaTitle} onChange={e => setNewIdeaTitle(e.target.value)} required />
+                        </div>
+                        <div className="form-group">
+                          <label>Description Summary</label>
+                          <textarea className="form-control" placeholder="Provide a summary of required work and business viability..." value={newIdeaDesc} onChange={e => setNewIdeaDesc(e.target.value)} required />
+                        </div>
 
+                        <div className="form-row">
+                          <div className="form-group" style={{ flex: 1 }}>
+                            <label>Required Skill Tag</label>
+                            <select className="form-control" onChange={e => setNewIdeaSkills([e.target.value])}>
+                              <option value="">Choose Skill...</option>
+                              {skills.map(s => <option key={s} value={s}>{s}</option>)}
+                            </select>
+                          </div>
+                          <div className="form-group" style={{ flex: 1 }}>
+                            <label>Core Interest Area</label>
+                            <select className="form-control" onChange={e => setNewIdeaInterests([e.target.value])}>
+                              <option value="">Choose Interest...</option>
+                              {interests.map(i => <option key={i} value={i}>{i}</option>)}
+                            </select>
+                          </div>
+                          <div className="form-group" style={{ flex: 1 }}>
+                            <label>Setup Difficulty</label>
+                            <select className="form-control" value={newIdeaDifficulty} onChange={e => setNewIdeaDifficulty(e.target.value)}>
+                              <option value="Easy">Easy</option>
+                              <option value="Medium">Medium</option>
+                              <option value="Hard">Hard</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <button className="btn-premium" style={{ padding: '0.75rem', marginTop: '0.5rem' }} type="submit">
+                          Publish Idea & Checklist Template
+                        </button>
+                      </form>
+                    </div>
+                  </>
+                )}
+
+              </div>
             </div>
-          </div>
+            {replyingSession && (
+              <div className="modal-overlay">
+                <div className="modal-content">
+                  <button className="modal-close" onClick={() => { setReplyingSession(null); setReplyText(''); }}>×</button>
+                  <h3 className="modal-title">Answer Inquiry</h3>
+                  <div style={{ background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '0.5rem', marginBottom: '1rem' }}>
+                    <strong style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Question from {replyingSession.userName}:</strong>
+                    <p style={{ marginTop: '0.25rem' }}>{replyingSession.question}</p>
+                  </div>
+                  <div className="form-group">
+                    <label>Your Response</label>
+                    <textarea className="form-control" rows="5" placeholder="Type your advice or answer here..." value={replyText} onChange={e => setReplyText(e.target.value)} required></textarea>
+                  </div>
+                  <button
+                    className="btn-premium"
+                    style={{ width: '100%', marginTop: '0.5rem' }}
+                    onClick={() => {
+                      if (!replyText.trim()) {
+                        triggerAlert('Please write a response first.');
+                        return;
+                      }
+                      handleSessionStatus(replyingSession.id, 'completed', replyText);
+                    }}
+                  >
+                    Send Answer
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
         )}
-
       </main>
 
       {/* Footer */}
