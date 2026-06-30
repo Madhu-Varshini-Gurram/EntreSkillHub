@@ -378,6 +378,13 @@ body {
   gap: 1rem;
 }
 
+@media (max-width: 600px) {
+  .hero-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
 /* Feature grid */
 .features-grid {
   display: grid;
