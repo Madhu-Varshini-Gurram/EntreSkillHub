@@ -371,13 +371,6 @@ body {
   letter-spacing: -1.5px;
 }
 
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: 2.5rem;
-    letter-spacing: -0.5px;
-  }
-}
-
 .hero-subtitle {
   font-size: 1.25rem;
   color: var(--text-secondary);
@@ -387,9 +380,19 @@ body {
 }
 
 @media (max-width: 768px) {
+  .hero-section {
+    padding: 2.5rem 0 1.5rem 0;
+  }
+  .hero-title {
+    font-size: 2.25rem;
+    line-height: 1.25;
+    letter-spacing: -0.5px;
+  }
   .hero-subtitle {
-    font-size: 1.1rem;
-    margin: 1rem 0 1.5rem 0;
+    font-size: 1.05rem;
+    margin: 1.25rem 0 2rem 0;
+    line-height: 1.5;
+    padding: 0 0.5rem;
   }
 }
 
