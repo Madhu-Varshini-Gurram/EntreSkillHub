@@ -1179,6 +1179,15 @@ body::before {
   margin-top: 1.5rem;
 }
 
+@media (max-width: 600px) {
+  .timeline-container {
+    padding-left: 0;
+  }
+  .timeline-line {
+    left: 17px !important;
+  }
+}
+
 .timeline-line {
   position: absolute;
   left: 32px; /* Center-aligned with the 34px node (16px padding + 17px half node - 1px half border) */
