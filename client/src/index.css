@@ -132,6 +132,9 @@ body {
   border: 1px solid var(--border-light);
   border-radius: 16px;
   padding: 1.75rem;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
   box-shadow: var(--shadow-md);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
@@ -460,6 +463,10 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+}
+
+.form-row > * {
+  min-width: 250px;
 }
 
 /* Wizard / Question Cards */
@@ -1021,6 +1028,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  min-width: 0;
 }
 
 .dash-stats-row {
