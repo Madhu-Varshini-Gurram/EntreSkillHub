@@ -88,6 +88,19 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok", database: "mongodb", port: PORT, timestamp: new Date().toISOString() });
 });
 
+app.get("/api/seed", async (req, res) => {
+  try {
+    const { spawn } = await import('child_process');
+    const child = spawn('node', ['seed.js'], { cwd: __dirname });
+    let logs = '';
+    child.stdout.on('data', data => logs += data.toString() + '\n');
+    child.stderr.on('data', data => logs += data.toString() + '\n');
+    child.on('close', code => res.send(`<pre>Seeding finished with code ${code}\n\nLogs:\n${logs}</pre>`));
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
 // 2. Auth Endpoints
 app.post("/api/auth/register", async (req, res) => {
   const { email, password, name, role, expertise } = req.body;
