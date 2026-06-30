@@ -37,6 +37,11 @@
   min-height: 100vh;
 }
 
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 body {
   margin: 0;
   background-color: var(--bg-main);
@@ -466,7 +471,14 @@ body {
 }
 
 .form-row > * {
-  min-width: 250px;
+  min-width: 200px;
+  flex: 1 1 100% !important;
+}
+
+@media (min-width: 600px) {
+  .form-row > * {
+    flex: 1 !important;
+  }
 }
 
 /* Wizard / Question Cards */
