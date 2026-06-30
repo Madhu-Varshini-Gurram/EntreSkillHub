@@ -186,6 +186,10 @@ const SessionSchema = new Schema({
     enum: ['pending', 'approved', 'rejected', 'completed'],
     default: 'pending'
   },
+  response: {
+    type: String,
+    default: ''
+  },
   requestedAt: {
     type: Date,
     default: Date.now
