@@ -491,12 +491,12 @@ const clientBuildPath = path.join(__dirname, "../client/dist");
 app.use(express.static(clientBuildPath));
 
 // API Catch-all
-app.use("/api/*", (req, res) => {
+app.use("/api", (req, res) => {
   res.status(404).json({ error: "API endpoint not found." });
 });
 
 // React Router Catch-all
-app.get("*", (req, res) => {
+app.get(/(.*)/, (req, res) => {
   res.sendFile(path.join(clientBuildPath, "index.html"));
 });
 
