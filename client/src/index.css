@@ -1,3 +1,7 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 :root {
   /* HSL tailored color palette */
   --bg-main: #0a0b10;
