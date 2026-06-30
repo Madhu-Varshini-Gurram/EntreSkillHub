@@ -564,6 +564,14 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .results-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 .results-header h2 {
