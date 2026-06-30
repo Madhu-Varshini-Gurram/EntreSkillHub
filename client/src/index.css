@@ -454,6 +454,7 @@ body {
 
 .form-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
 }
 
@@ -1047,6 +1048,9 @@ body {
   border-collapse: collapse;
   text-align: left;
   font-size: 0.95rem;
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 .session-table th, .session-table td {
