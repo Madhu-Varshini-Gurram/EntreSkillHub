@@ -81,10 +81,7 @@ function requireAdmin(req, res, next) {
 
 // --- API ROUTES ---
 
-// Root route welcome message
-app.get("/", (req, res) => {
-  res.send("EntreSkill Hub API Server is running. Access the front-end UI at http://localhost:5173");
-});
+
 
 // 1. Health check & Initial Seed Info
 app.get("/api/health", (req, res) => {
